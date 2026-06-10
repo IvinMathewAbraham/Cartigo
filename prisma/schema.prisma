@@ -1,0 +1,905 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id              BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
+  name            String            @unique(map: "name") @db.VarChar(50)
+  createdAt       DateTime?         @default(now()) @map("created_at") @db.Timestamp(0)
+  role_permission role_permission[]
+  ticket          ticket[]
+  user_role       user_role[]
+
+  @@map("role")
+}
+
+model User {
+  id                              BigInt                     @id @default(autoincrement()) @db.UnsignedBigInt
+  email                           String                     @unique(map: "email") @db.VarChar(255)
+  passwordHash                    String                     @map("password_hash") @db.VarChar(255)
+  firstName                       String                     @map("first_name") @db.VarChar(100)
+  lastName                        String                     @map("last_name") @db.VarChar(100)
+  phone                           String?                    @db.VarChar(20)
+  is_verified                     Boolean?                   @default(false)
+  is_active                       Boolean?                   @default(true)
+  createdAt                       DateTime?                  @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt                       DateTime?                  @default(now()) @updatedAt @map("updated_at") @db.Timestamp(0)
+  addresses                       Address[]
+  cart                            Cart[]
+  cart_activity                   cart_activity[]
+  coupon_usage                    coupon_usage[]
+  inventory_history               InventoryHistory[]
+  notification                    notification[]
+  notification_recipient          notification_recipient[]
+  orders                          Order[]
+  product_purchase_history        product_purchase_history[]
+  product_report                  product_report[]
+  product_view_history            product_view_history[]
+  recommended_product             recommended_product[]
+  return_request                  return_request[]
+  return_request_history          return_request_history[]
+  review                          review[]
+  review_report                   review_report[]
+  review_vote                     review_vote[]
+  search_click_history            search_click_history[]
+  search_history                  search_history[]
+  ticket_ticket_assigned_toTouser ticket[]                   @relation("ticket_assigned_toTouser")
+  ticket_ticket_user_idTouser     ticket[]                   @relation("ticket_user_idTouser")
+  ticket_message                  ticket_message[]
+  ticket_status_history           ticket_status_history[]
+  user_role                       user_role[]
+  user_session                    user_session[]
+  user_verification               user_verification[]
+  wishlist                        wishlist?
+
+  @@map("user")
+}
+
+model Address {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  userId       BigInt    @map("user_id") @db.UnsignedBigInt
+  label        String?   @db.VarChar(50)
+  addressLine1 String    @map("address_line_1") @db.VarChar(255)
+  addressLine2 String?   @map("address_line_2") @db.VarChar(255)
+  city         String    @db.VarChar(100)
+  state        String    @db.VarChar(100)
+  postalCode   String    @map("postal_code") @db.VarChar(20)
+  country      String    @db.VarChar(100)
+  isDefault    Boolean?  @default(false) @map("is_default")
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_address_user")
+
+  @@index([userId], map: "fk_address_user")
+  @@map("address")
+}
+
+model Category {
+  id                 BigInt               @id @default(autoincrement()) @db.UnsignedBigInt
+  parentId           BigInt?              @map("parent_id") @db.UnsignedBigInt
+  name               String               @db.VarChar(255)
+  slug               String               @unique(map: "slug") @db.VarChar(255)
+  description        String?              @db.Text
+  createdAt          DateTime?            @default(now()) @map("created_at") @db.Timestamp(0)
+  parent             Category?            @relation("CategoryParent", fields: [parentId], references: [id], onUpdate: NoAction, map: "fk_category_parent")
+  children           Category[]           @relation("CategoryParent")
+  product            Product[]
+  product_category   product_category[]
+  promotion_category promotion_category[]
+
+  @@index([parentId], map: "fk_category_parent")
+  @@map("category")
+}
+
+model Product {
+  id                     BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
+  brand_id               BigInt?                 @db.UnsignedBigInt
+  primary_category_id    BigInt?                 @db.UnsignedBigInt
+  name                   String                  @db.VarChar(255)
+  slug                   String                  @unique(map: "slug") @db.VarChar(255)
+  description            String?                 @db.Text
+  is_active              Boolean?                @default(true)
+  createdAt              DateTime?               @default(now()) @map("created_at") @db.Timestamp(0)
+  brand                  brand?                  @relation(fields: [brand_id], references: [id], onUpdate: NoAction, map: "fk_product_brand")
+  category               Category?               @relation(fields: [primary_category_id], references: [id], onUpdate: NoAction, map: "fk_product_primary_category")
+  product_category       product_category[]
+  images                 ProductImage[]
+  product_report         product_report[]
+  product_review_summary product_review_summary?
+  product_tag_map        product_tag_map[]
+  variants               ProductVariant[]
+  promotion_product      promotion_product[]
+
+  @@index([brand_id], map: "fk_product_brand")
+  @@index([primary_category_id], map: "fk_product_primary_category")
+  @@map("product")
+}
+
+model ProductImage {
+  id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  productId     BigInt    @map("product_id") @db.UnsignedBigInt
+  url           String    @db.VarChar(255)
+  alt_text      String?   @db.VarChar(255)
+  isPrimary     Boolean?  @default(false) @map("is_primary")
+  display_order Int?      @default(0)
+  created_at    DateTime? @default(now()) @db.Timestamp(0)
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_image_product")
+
+  @@index([productId], map: "fk_product_image_product")
+  @@map("product_image")
+}
+
+model ProductAttribute {
+  id         BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
+  name       String                  @unique(map: "name") @db.VarChar(100)
+  created_at DateTime?               @default(now()) @db.Timestamp(0)
+  values     ProductAttributeValue[]
+
+  @@map("product_attribute")
+}
+
+model ProductAttributeValue {
+  id          BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
+  attributeId BigInt                  @map("attribute_id") @db.UnsignedBigInt
+  value       String                  @db.VarChar(100)
+  created_at  DateTime?               @default(now()) @db.Timestamp(0)
+  attribute   ProductAttribute        @relation(fields: [attributeId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_attribute_value_attribute")
+  variants    VariantAttributeValue[]
+
+  @@unique([attributeId, value], map: "attribute_id")
+  @@map("product_attribute_value")
+}
+
+model ProductVariant {
+  id                       BigInt                     @id @default(autoincrement()) @db.UnsignedBigInt
+  productId                BigInt                     @map("product_id") @db.UnsignedBigInt
+  sku                      String?                    @unique(map: "sku") @db.VarChar(100)
+  price                    Decimal                    @db.Decimal(10, 2)
+  is_active                Boolean?                   @default(true)
+  createdAt                DateTime?                  @default(now()) @map("created_at") @db.Timestamp(0)
+  cart_activity            cart_activity[]
+  cartItems                CartItem[]
+  inventory                inventory?
+  inventoryEvents          InventoryHistory[]
+  orderItems               OrderItem[]
+  product_purchase_history product_purchase_history[]
+  product                  Product                    @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_variant_product")
+  product_view_history     product_view_history[]
+  recommended_product      recommended_product[]
+  review                   review[]
+  search_click_history     search_click_history[]
+  attributes               VariantAttributeValue[]
+  wishlist_item            wishlist_item[]
+
+  @@index([productId], map: "fk_product_variant_product")
+  @@map("product_variant")
+}
+
+model VariantAttributeValue {
+  id               BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
+  variantId        BigInt                @map("variant_id") @db.UnsignedBigInt
+  attributeValueId BigInt                @map("attribute_value_id") @db.UnsignedBigInt
+  created_at       DateTime?             @default(now()) @db.Timestamp(0)
+  attributeValue   ProductAttributeValue @relation(fields: [attributeValueId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_variant_attribute_value")
+  variant          ProductVariant        @relation(fields: [variantId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_variant_attribute_variant")
+
+  @@unique([variantId, attributeValueId], map: "variant_id")
+  @@index([attributeValueId], map: "fk_variant_attribute_value")
+  @@map("variant_attribute_value")
+}
+
+model InventoryHistory {
+  id              BigInt                        @id @default(autoincrement()) @db.UnsignedBigInt
+  performed_by    BigInt?                       @db.UnsignedBigInt
+  variantId       BigInt                        @map("variant_id") @db.UnsignedBigInt
+  quantity_before Int
+  quantity_after  Int
+  quantityChange  Int                           @map("quantity_change")
+  changeType      inventory_history_change_type @map("change_type")
+  note            String?                       @db.VarChar(255)
+  createdAt       DateTime?                     @default(now()) @map("created_at") @db.Timestamp(0)
+  user            User?                         @relation(fields: [performed_by], references: [id], onUpdate: NoAction, map: "fk_inventory_history_performed_by")
+  variant         ProductVariant                @relation(fields: [variantId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_inventory_history_variant")
+
+  @@index([performed_by], map: "fk_inventory_history_performed_by")
+  @@index([variantId], map: "fk_inventory_history_variant")
+  @@map("inventory_history")
+}
+
+model Cart {
+  id               BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  userId           BigInt?        @map("user_id") @db.UnsignedBigInt
+  guest_session_id BigInt?        @db.UnsignedBigInt
+  createdAt        DateTime?      @default(now()) @map("created_at") @db.Timestamp(0)
+  guest_session    guest_session? @relation(fields: [guest_session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_guest_session")
+  user             User?          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_user")
+  items            CartItem[]
+
+  @@index([guest_session_id], map: "fk_cart_guest_session")
+  @@index([userId], map: "fk_cart_user")
+  @@map("cart")
+}
+
+model CartItem {
+  id        BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  cartId    BigInt         @map("cart_id") @db.UnsignedBigInt
+  variantId BigInt         @map("variant_id") @db.UnsignedBigInt
+  quantity  Int
+  createdAt DateTime?      @default(now()) @map("created_at") @db.Timestamp(0)
+  cart      Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_item_cart")
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cart_item_variant")
+
+  @@unique([cartId, variantId], map: "cart_id")
+  @@index([variantId], map: "fk_cart_item_variant")
+  @@map("cart_item")
+}
+
+model Order {
+  id                   BigInt                 @id @default(autoincrement()) @db.UnsignedBigInt
+  userId               BigInt                 @map("user_id") @db.UnsignedBigInt
+  totalAmount          Decimal                @map("total_amount") @db.Decimal(12, 2)
+  status               orders_status?         @default(PENDING)
+  createdAt            DateTime?              @default(now()) @map("created_at") @db.Timestamp(0)
+  coupon_usage         coupon_usage[]
+  items                OrderItem[]
+  order_status_history order_status_history[]
+  user                 User                   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_orders_user")
+
+  @@index([userId], map: "fk_orders_user")
+  @@map("orders")
+}
+
+model OrderItem {
+  id                  BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
+  orderId             BigInt                @map("order_id") @db.UnsignedBigInt
+  variantId           BigInt                @map("variant_id") @db.UnsignedBigInt
+  sku                 String?               @db.VarChar(100)
+  productName         String                @map("product_name") @db.VarChar(255)
+  quantity            Int
+  price               Decimal               @db.Decimal(10, 2)
+  created_at          DateTime?             @default(now()) @db.Timestamp(0)
+  order               Order                 @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_item_order")
+  variant             ProductVariant        @relation(fields: [variantId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_item_variant")
+  return_request_item return_request_item[]
+
+  @@index([orderId], map: "fk_order_item_order")
+  @@index([variantId], map: "fk_order_item_variant")
+  @@map("order_item")
+}
+
+model banner {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name       String    @db.VarChar(255)
+  image_url  String    @db.VarChar(255)
+  link_url   String?   @db.VarChar(255)
+  start_date DateTime? @db.Date
+  end_date   DateTime? @db.Date
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model brand {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name        String    @unique(map: "name") @db.VarChar(255)
+  slug        String    @unique(map: "slug") @db.VarChar(255)
+  description String?   @db.Text
+  created_at  DateTime? @default(now()) @db.Timestamp(0)
+  product     Product[]
+}
+
+model cart_activity {
+  id              BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id         BigInt?               @db.UnsignedBigInt
+  variant_id      BigInt                @db.UnsignedBigInt
+  action          cart_activity_action?
+  created_at      DateTime?             @default(now()) @db.Timestamp(0)
+  user            User?                 @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "cart_activity_ibfk_1")
+  product_variant ProductVariant        @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "cart_activity_ibfk_2")
+
+  @@index([user_id], map: "user_id")
+  @@index([variant_id], map: "variant_id")
+}
+
+model coupon {
+  id                   BigInt               @id @default(autoincrement()) @db.UnsignedBigInt
+  code                 String               @unique(map: "code") @db.VarChar(50)
+  discount_type        coupon_discount_type
+  discount_value       Decimal              @db.Decimal(10, 2)
+  minimum_order_amount Decimal?             @db.Decimal(12, 2)
+  usage_limit          Int?
+  usage_count          Int?                 @default(0)
+  max_discount_amount  Decimal?             @db.Decimal(10, 2)
+  is_active            Boolean?             @default(true)
+  start_date           DateTime?            @db.Date
+  expiration_date      DateTime?            @db.Date
+  created_at           DateTime?            @default(now()) @db.Timestamp(0)
+  coupon_usage         coupon_usage[]
+}
+
+model coupon_usage {
+  id        BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  coupon_id BigInt    @db.UnsignedBigInt
+  user_id   BigInt    @db.UnsignedBigInt
+  order_id  BigInt    @db.UnsignedBigInt
+  used_at   DateTime? @default(now()) @db.Timestamp(0)
+  coupon    coupon    @relation(fields: [coupon_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_usage_coupon")
+  orders    Order     @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_usage_order")
+  user      User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_coupon_usage_user")
+
+  @@unique([coupon_id, user_id], map: "coupon_id")
+  @@index([order_id], map: "fk_coupon_usage_order")
+  @@index([user_id], map: "fk_coupon_usage_user")
+}
+
+model guest_session {
+  id                   BigInt                 @id @default(autoincrement()) @db.UnsignedBigInt
+  token                String                 @unique(map: "token") @db.VarChar(255)
+  created_at           DateTime?              @default(now()) @db.Timestamp(0)
+  cart                 Cart[]
+  product_view_history product_view_history[]
+  search_history       search_history[]
+}
+
+model inventory {
+  id              BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  variant_id      BigInt         @unique(map: "variant_id") @db.UnsignedBigInt
+  quantity        Int            @default(0)
+  last_updated    DateTime?      @default(now()) @db.Timestamp(0)
+  product_variant ProductVariant @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_inventory_variant")
+}
+
+model notification {
+  id                     BigInt                   @id @default(autoincrement()) @db.UnsignedBigInt
+  notification_type_id   BigInt                   @db.UnsignedBigInt
+  message                String                   @db.Text
+  created_by             BigInt?                  @db.UnsignedBigInt
+  created_at             DateTime?                @default(now()) @db.Timestamp(0)
+  user                   User?                    @relation(fields: [created_by], references: [id], onUpdate: NoAction, map: "fk_notification_created_by")
+  notification_type      notification_type        @relation(fields: [notification_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_notification_type")
+  notification_recipient notification_recipient[]
+
+  @@index([created_by], map: "fk_notification_created_by")
+  @@index([notification_type_id], map: "fk_notification_type")
+}
+
+model notification_recipient {
+  id              BigInt       @id @default(autoincrement()) @db.UnsignedBigInt
+  notification_id BigInt       @db.UnsignedBigInt
+  recipient_id    BigInt       @db.UnsignedBigInt
+  is_read         Boolean?     @default(false)
+  read_at         DateTime?    @db.Timestamp(0)
+  created_at      DateTime?    @default(now()) @db.Timestamp(0)
+  notification    notification @relation(fields: [notification_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_notification_recipient_notification")
+  user            User         @relation(fields: [recipient_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_notification_recipient_user")
+
+  @@unique([notification_id, recipient_id], map: "notification_id")
+  @@index([recipient_id], map: "fk_notification_recipient_user")
+}
+
+model notification_type {
+  id           BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  name         String         @unique(map: "name") @db.VarChar(50)
+  description  String?        @db.Text
+  created_at   DateTime?      @default(now()) @db.Timestamp(0)
+  notification notification[]
+}
+
+model order_status_history {
+  id         BigInt                          @id @default(autoincrement()) @db.UnsignedBigInt
+  order_id   BigInt                          @db.UnsignedBigInt
+  old_status order_status_history_old_status
+  new_status order_status_history_new_status
+  changed_at DateTime?                       @default(now()) @db.Timestamp(0)
+  orders     Order                           @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_status_history_order")
+
+  @@index([order_id], map: "fk_order_status_history_order")
+}
+
+model permission {
+  id              BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
+  name            String            @unique(map: "name") @db.VarChar(100)
+  description     String?           @db.Text
+  created_at      DateTime?         @default(now()) @db.Timestamp(0)
+  role_permission role_permission[]
+}
+
+model product_category {
+  product_id  BigInt   @db.UnsignedBigInt
+  category_id BigInt   @db.UnsignedBigInt
+  product     Product  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_category_ibfk_1")
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_category_ibfk_2")
+
+  @@id([product_id, category_id])
+  @@index([category_id], map: "category_id")
+}
+
+model product_purchase_history {
+  id              BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  variant_id      BigInt         @db.UnsignedBigInt
+  user_id         BigInt         @db.UnsignedBigInt
+  purchased_at    DateTime?      @default(now()) @db.Timestamp(0)
+  user            User           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_purchase_history_user")
+  product_variant ProductVariant @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_purchase_history_variant")
+
+  @@index([user_id], map: "fk_product_purchase_history_user")
+  @@index([variant_id], map: "fk_product_purchase_history_variant")
+}
+
+model product_report {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  product_id BigInt    @db.UnsignedBigInt
+  user_id    BigInt    @db.UnsignedBigInt
+  reason     String    @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  product    Product   @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_report_product")
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_report_user")
+
+  @@index([product_id], map: "fk_product_report_product")
+  @@index([user_id], map: "fk_product_report_user")
+}
+
+model product_review_summary {
+  product_id     BigInt    @id @db.UnsignedBigInt
+  average_rating Decimal?  @default(0.00) @db.Decimal(3, 2)
+  total_reviews  Int?      @default(0)
+  created_at     DateTime? @default(now()) @db.Timestamp(0)
+  product        Product   @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_review_summary_product")
+}
+
+model product_tag {
+  id              BigInt            @id @default(autoincrement()) @db.UnsignedBigInt
+  name            String            @unique(map: "name") @db.VarChar(50)
+  created_at      DateTime?         @default(now()) @db.Timestamp(0)
+  product_tag_map product_tag_map[]
+}
+
+model product_tag_map {
+  product_id  BigInt      @db.UnsignedBigInt
+  tag_id      BigInt      @db.UnsignedBigInt
+  created_at  DateTime?   @default(now()) @db.Timestamp(0)
+  product     Product     @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_tag_map_product")
+  product_tag product_tag @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_product_tag_map_tag")
+
+  @@id([product_id, tag_id])
+  @@index([tag_id], map: "fk_product_tag_map_tag")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model product_view_history {
+  id               BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id          BigInt?        @db.UnsignedBigInt
+  guest_session_id BigInt?        @db.UnsignedBigInt
+  variant_id       BigInt         @db.UnsignedBigInt
+  viewed_at        DateTime?      @default(now()) @db.Timestamp(0)
+  user             User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_view_history_ibfk_1")
+  guest_session    guest_session? @relation(fields: [guest_session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_view_history_ibfk_2")
+  product_variant  ProductVariant @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_view_history_ibfk_3")
+
+  @@index([guest_session_id], map: "guest_session_id")
+  @@index([user_id], map: "user_id")
+  @@index([variant_id], map: "variant_id")
+}
+
+model promotion {
+  id                 BigInt                   @id @default(autoincrement()) @db.UnsignedBigInt
+  name               String                   @db.VarChar(255)
+  description        String?                  @db.Text
+  discount_type      promotion_discount_type?
+  discount_value     Decimal                  @db.Decimal(10, 2)
+  start_date         DateTime?                @db.Date
+  end_date           DateTime?                @db.Date
+  created_at         DateTime?                @default(now()) @db.Timestamp(0)
+  promotion_category promotion_category[]
+  promotion_product  promotion_product[]
+}
+
+model promotion_category {
+  promotion_id BigInt    @db.UnsignedBigInt
+  category_id  BigInt    @db.UnsignedBigInt
+  promotion    promotion @relation(fields: [promotion_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "promotion_category_ibfk_1")
+  category     Category  @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "promotion_category_ibfk_2")
+
+  @@id([promotion_id, category_id])
+  @@index([category_id], map: "category_id")
+}
+
+model promotion_product {
+  promotion_id BigInt    @db.UnsignedBigInt
+  product_id   BigInt    @db.UnsignedBigInt
+  promotion    promotion @relation(fields: [promotion_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "promotion_product_ibfk_1")
+  product      Product   @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "promotion_product_ibfk_2")
+
+  @@id([promotion_id, product_id])
+  @@index([product_id], map: "product_id")
+}
+
+model recommended_product {
+  id              BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id         BigInt         @db.UnsignedBigInt
+  variant_id      BigInt         @db.UnsignedBigInt
+  score           Decimal        @db.Decimal(5, 2)
+  reason          String?        @db.VarChar(255)
+  recommended_at  DateTime?      @default(now()) @db.Timestamp(0)
+  expired_at      DateTime?      @db.Timestamp(0)
+  is_clicked      Boolean?       @default(false)
+  user            User           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_recommended_product_user")
+  product_variant ProductVariant @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_recommended_product_variant")
+
+  @@index([user_id], map: "fk_recommended_product_user")
+  @@index([variant_id], map: "fk_recommended_product_variant")
+}
+
+model refund {
+  id                BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  return_request_id BigInt         @unique(map: "return_request_id") @db.UnsignedBigInt
+  amount            Decimal        @db.Decimal(12, 2)
+  status            refund_status? @default(PENDING)
+  created_at        DateTime?      @default(now()) @db.Timestamp(0)
+  updated_at        DateTime?      @default(now()) @db.Timestamp(0)
+  return_request    return_request @relation(fields: [return_request_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_refund_return_request")
+}
+
+model return_request {
+  id                     BigInt                   @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id                BigInt                   @db.UnsignedBigInt
+  reason                 String                   @db.VarChar(255)
+  status                 return_request_status?   @default(PENDING)
+  created_at             DateTime?                @default(now()) @db.Timestamp(0)
+  updated_at             DateTime?                @default(now()) @db.Timestamp(0)
+  refund                 refund?
+  user                   User                     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_return_request_user")
+  return_request_history return_request_history[]
+  return_request_item    return_request_item[]
+
+  @@index([user_id], map: "fk_return_request_user")
+}
+
+model return_request_history {
+  id                BigInt                            @id @default(autoincrement()) @db.UnsignedBigInt
+  return_request_id BigInt                            @db.UnsignedBigInt
+  old_status        return_request_history_old_status
+  new_status        return_request_history_new_status
+  changed_at        DateTime?                         @default(now()) @db.Timestamp(0)
+  changed_by        BigInt                            @db.UnsignedBigInt
+  user              User                              @relation(fields: [changed_by], references: [id], onUpdate: NoAction, map: "fk_return_request_history_changed_by")
+  return_request    return_request                    @relation(fields: [return_request_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_return_request_history_request")
+
+  @@index([changed_by], map: "fk_return_request_history_changed_by")
+  @@index([return_request_id], map: "fk_return_request_history_request")
+}
+
+model return_request_item {
+  id                BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  return_request_id BigInt         @db.UnsignedBigInt
+  order_item_id     BigInt         @db.UnsignedBigInt
+  quantity          Int            @default(1)
+  created_at        DateTime?      @default(now()) @db.Timestamp(0)
+  order_item        OrderItem      @relation(fields: [order_item_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_return_request_item_order_item")
+  return_request    return_request @relation(fields: [return_request_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_return_request_item_request")
+
+  @@unique([return_request_id, order_item_id], map: "return_request_id")
+  @@index([order_item_id], map: "fk_return_request_item_order_item")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model review {
+  id              BigInt          @id @default(autoincrement()) @db.UnsignedBigInt
+  variant_id      BigInt          @db.UnsignedBigInt
+  user_id         BigInt          @db.UnsignedBigInt
+  rating          Int             @db.UnsignedTinyInt
+  title           String?         @db.VarChar(255)
+  body            String?         @db.Text
+  created_at      DateTime?       @default(now()) @db.Timestamp(0)
+  user            User            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_review_user")
+  product_variant ProductVariant  @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_review_variant")
+  review_image    review_image[]
+  review_report   review_report[]
+  review_vote     review_vote[]
+
+  @@unique([user_id, variant_id], map: "user_id")
+  @@index([variant_id], map: "fk_review_variant")
+}
+
+model review_image {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  review_id  BigInt    @db.UnsignedBigInt
+  url        String    @db.VarChar(255)
+  alt_text   String?   @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  review     review    @relation(fields: [review_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_review_image_review")
+
+  @@index([review_id], map: "fk_review_image_review")
+}
+
+model review_report {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  review_id  BigInt    @db.UnsignedBigInt
+  user_id    BigInt    @db.UnsignedBigInt
+  reason     String    @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  review     review    @relation(fields: [review_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_review_report_review")
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_review_report_user")
+
+  @@index([review_id], map: "fk_review_report_review")
+  @@index([user_id], map: "fk_review_report_user")
+}
+
+model review_vote {
+  id         BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
+  review_id  BigInt                @db.UnsignedBigInt
+  user_id    BigInt                @db.UnsignedBigInt
+  vote_type  review_vote_vote_type
+  created_at DateTime?             @default(now()) @db.Timestamp(0)
+  review     review                @relation(fields: [review_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_review_vote_review")
+  user       User                  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_review_vote_user")
+
+  @@unique([review_id, user_id], map: "review_id")
+  @@index([user_id], map: "fk_review_vote_user")
+}
+
+model role_permission {
+  role_id       BigInt     @db.UnsignedBigInt
+  permission_id BigInt     @db.UnsignedBigInt
+  permission    permission @relation(fields: [permission_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_permission_permission")
+  role          Role       @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_permission_role")
+
+  @@id([role_id, permission_id])
+  @@index([permission_id], map: "fk_role_permission_permission")
+}
+
+model search_click_history {
+  id                BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  search_history_id BigInt         @db.UnsignedBigInt
+  user_id           BigInt?        @db.UnsignedBigInt
+  variant_id        BigInt         @db.UnsignedBigInt
+  clicked_at        DateTime?      @default(now()) @db.Timestamp(0)
+  search_history    search_history @relation(fields: [search_history_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "search_click_history_ibfk_1")
+  user              User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "search_click_history_ibfk_2")
+  product_variant   ProductVariant @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "search_click_history_ibfk_3")
+
+  @@index([search_history_id], map: "search_history_id")
+  @@index([user_id], map: "user_id")
+  @@index([variant_id], map: "variant_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model search_history {
+  id                   BigInt                 @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id              BigInt?                @db.UnsignedBigInt
+  guest_session_id     BigInt?                @db.UnsignedBigInt
+  search_query         String                 @db.VarChar(255)
+  results_count        Int
+  searched_at          DateTime?              @default(now()) @db.Timestamp(0)
+  search_click_history search_click_history[]
+  guest_session        guest_session?         @relation(fields: [guest_session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_search_history_guest_session")
+  user                 User?                  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_search_history_user")
+
+  @@index([guest_session_id], map: "fk_search_history_guest_session")
+  @@index([user_id], map: "fk_search_history_user")
+}
+
+model ticket {
+  id                            BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id                       BigInt                  @db.UnsignedBigInt
+  subject                       String                  @db.VarChar(255)
+  description                   String?                 @db.Text
+  status                        ticket_status?          @default(OPEN)
+  priority                      ticket_priority?        @default(MEDIUM)
+  assigned_to                   BigInt?                 @db.UnsignedBigInt
+  assigned_role_id              BigInt?                 @db.UnsignedBigInt
+  resolved_at                   DateTime?               @db.Timestamp(0)
+  closed_at                     DateTime?               @db.Timestamp(0)
+  created_at                    DateTime?               @default(now()) @db.Timestamp(0)
+  updated_at                    DateTime?               @default(now()) @db.Timestamp(0)
+  user_ticket_assigned_toTouser User?                   @relation("ticket_assigned_toTouser", fields: [assigned_to], references: [id], onUpdate: NoAction, map: "fk_ticket_assigned")
+  role                          Role?                   @relation(fields: [assigned_role_id], references: [id], onUpdate: NoAction, map: "fk_ticket_assigned_role")
+  user_ticket_user_idTouser     User                    @relation("ticket_user_idTouser", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ticket_user")
+  ticket_message                ticket_message[]
+  ticket_status_history         ticket_status_history[]
+
+  @@index([assigned_to], map: "fk_ticket_assigned")
+  @@index([assigned_role_id], map: "fk_ticket_assigned_role")
+  @@index([user_id], map: "fk_ticket_user")
+}
+
+model ticket_attachment {
+  id                BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  ticket_message_id BigInt         @db.UnsignedBigInt
+  file_url          String         @db.VarChar(255)
+  created_at        DateTime?      @default(now()) @db.Timestamp(0)
+  ticket_message    ticket_message @relation(fields: [ticket_message_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ticket_attachment_message")
+
+  @@index([ticket_message_id], map: "fk_ticket_attachment_message")
+}
+
+model ticket_message {
+  id                BigInt              @id @default(autoincrement()) @db.UnsignedBigInt
+  ticket_id         BigInt              @db.UnsignedBigInt
+  sender_id         BigInt              @db.UnsignedBigInt
+  is_internal       Boolean?            @default(false)
+  message           String              @db.Text
+  created_at        DateTime?           @default(now()) @db.Timestamp(0)
+  ticket_attachment ticket_attachment[]
+  user              User                @relation(fields: [sender_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ticket_message_sender")
+  ticket            ticket              @relation(fields: [ticket_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ticket_message_ticket")
+
+  @@index([sender_id], map: "fk_ticket_message_sender")
+  @@index([ticket_id], map: "fk_ticket_message_ticket")
+}
+
+model ticket_status_history {
+  id         BigInt                            @id @default(autoincrement()) @db.UnsignedBigInt
+  ticket_id  BigInt                            @db.UnsignedBigInt
+  old_status ticket_status_history_old_status?
+  new_status ticket_status_history_new_status
+  changed_by BigInt                            @db.UnsignedBigInt
+  changed_at DateTime?                         @default(now()) @db.Timestamp(0)
+  user       User                              @relation(fields: [changed_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ticket_status_history_changed_by")
+  ticket     ticket                            @relation(fields: [ticket_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ticket_status_history_ticket")
+
+  @@index([changed_by], map: "fk_ticket_status_history_changed_by")
+  @@index([ticket_id], map: "fk_ticket_status_history_ticket")
+}
+
+model user_role {
+  user_id BigInt @db.UnsignedBigInt
+  role_id BigInt @db.UnsignedBigInt
+  role    Role   @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_role_role")
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_role_user")
+
+  @@id([user_id, role_id])
+  @@index([role_id], map: "fk_user_role_role")
+}
+
+model user_session {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id    BigInt    @db.UnsignedBigInt
+  token      String    @unique(map: "token") @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_session_user")
+
+  @@index([user_id], map: "fk_user_session_user")
+}
+
+model user_verification {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id           BigInt    @db.UnsignedBigInt
+  verification_code String    @db.VarChar(100)
+  expires_at        DateTime  @db.Timestamp(0)
+  created_at        DateTime? @default(now()) @db.Timestamp(0)
+  user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_verification_user")
+
+  @@index([user_id], map: "fk_user_verification_user")
+}
+
+model wishlist {
+  id            BigInt          @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id       BigInt          @unique(map: "user_id") @db.UnsignedBigInt
+  created_at    DateTime?       @default(now()) @db.Timestamp(0)
+  user          User            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_wishlist_user")
+  wishlist_item wishlist_item[]
+}
+
+model wishlist_item {
+  id              BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  wishlist_id     BigInt         @db.UnsignedBigInt
+  variant_id      BigInt         @db.UnsignedBigInt
+  created_at      DateTime?      @default(now()) @db.Timestamp(0)
+  product_variant ProductVariant @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_wishlist_item_variant")
+  wishlist        wishlist       @relation(fields: [wishlist_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_wishlist_item_wishlist")
+
+  @@unique([wishlist_id, variant_id], map: "wishlist_id")
+  @@index([variant_id], map: "fk_wishlist_item_variant")
+}
+
+enum coupon_discount_type {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum order_status_history_old_status {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum return_request_history_old_status {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum ticket_status_history_old_status {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum cart_activity_action {
+  ADD
+  REMOVE
+}
+
+enum order_status_history_new_status {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum orders_status {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum promotion_discount_type {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum refund_status {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum return_request_status {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum return_request_history_new_status {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum review_vote_vote_type {
+  UPVOTE
+  DOWNVOTE
+}
+
+enum ticket_status_history_new_status {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum ticket_status {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum ticket_priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum inventory_history_change_type {
+  PURCHASE
+  SALE
+  RETURN
+  ADJUSTMENT
+  DAMAGED
+  RESTOCK
+}
