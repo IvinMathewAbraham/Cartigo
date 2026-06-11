@@ -1,0 +1,168 @@
+	/* Main ShopKart styles adapted from the provided UI snippet */
+	* { box-sizing: border-box; margin: 0; padding: 0; }
+	body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; color: #111; }
+	:root{
+		--navy:#0f1111;
+		--orange:#ff9900;
+		--orange-dark:#e47911;
+		--teal:#007185;
+		--gray-border:#ddd;
+	}
+	.topnav { background: var(--navy); color: #fff; display: flex; align-items: center; padding: 0 16px; height: 52px; gap: 10px; position: sticky; top: 0; z-index: 100; }
+	.logo { font-size: 22px; font-weight: 800; color: var(--orange); }
+	.logo span{ color:#fff }
+	.nav-search{ flex:1; display:flex; max-width:700px; height:38px }
+	.nav-search select{ padding:0 8px; font-size:12px; background:#e6e6e6; border:none; border-radius:4px 0 0 4px }
+	.nav-search input{ flex:1; border:none; padding:0 12px }
+	.nav-search button{ background:var(--orange); border:none; padding:0 14px; border-radius:0 4px 4px 0 }
+	.nav-right{ display:flex; align-items:center; gap:16px; margin-left:auto }
+	.nav-link{ color:#fff; font-size:12px }
+	.cart-btn{ display:flex; align-items:center; gap:6px; color:#fff; cursor:pointer; font-weight:600 }
+	.cart-count{ background:var(--orange); color:var(--navy); border-radius:50%; width:18px; height:18px; font-size:11px; display:flex; align-items:center; justify-content:center; position:relative }
+	.subnav{ background:#232f3e; color:#fff; display:flex; align-items:center; padding:0 16px; height:36px; gap:20px }
+	.page-tabs{ display:flex; gap:0; background:#fff; border-bottom:2px solid var(--orange); padding:0 16px }
+	.tab{ padding:10px 20px; cursor:pointer; font-size:13px; color:#666 }
+	.tab.active{ color:var(--orange-dark); border-bottom:2px solid var(--orange) }
+	.view{ display:none }
+	.view.active{ display:block }
+	.hero{ background:linear-gradient(135deg,#1a2a6c 0%,#0f1111 60%,#232f3e 100%); color:#fff; padding:48px 40px; display:flex; align-items:center; justify-content:space-between }
+	.hero-text h1{ font-size:36px; font-weight:800 }
+	.btn-primary{ background:var(--orange); color:var(--navy); border:none; padding:12px 28px; border-radius:6px; font-weight:700 }
+	.btn-outline{ background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.4); padding:11px 28px; border-radius:6px }
+	.section{ padding:24px 24px 8px }
+	.prod-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; padding:0 24px 24px }
+	.prod-card{ background:#fff; border:1px solid var(--gray-border); border-radius:8px; overflow:hidden; cursor:pointer; transition:box-shadow .15s; position:relative }
+	.prod-img{ width:100%; height:160px; display:flex; align-items:center; justify-content:center; font-size:52px; background:#f5f5f5 }
+	.prod-body{ padding:12px }
+	.prod-name{ font-size:13px; font-weight:600; color:#111; margin-bottom:4px }
+	.prod-brand{ font-size:12px; color:var(--teal); margin-bottom:4px }
+	.stars{ color:#f0a500 }
+	.prod-price{ font-size:18px; font-weight:800 }
+	.add-cart-btn{ width:100%; background:var(--orange); border:none; padding:8px; border-radius:4px; font-weight:600; color:var(--navy); margin-top:8px }
+	.badge-corner{ position:absolute; top:8px; left:8px; background:var(--orange); color:var(--navy); font-size:11px; padding:2px 8px; border-radius:3px }
+	.shop-layout{ display:flex; min-height:600px }
+	.shop-sidebar{ width:220px; background:#fff; border-right:1px solid var(--gray-border); padding:16px }
+	.sidebar-title{ font-weight:700; margin-bottom:10px }
+	.shop-main{ flex:1; padding:16px }
+	.shop-toolbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; background:#fff; padding:10px 14px; border-radius:6px; border:1px solid var(--gray-border) }
+	.cart-sidebar{ position:fixed; right:0; top:52px; width:360px; background:#fff; border-left:2px solid var(--orange); height:calc(100% - 52px); box-shadow:-4px 0 20px rgba(0,0,0,0.15); z-index:200; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .25s ease }
+	.cart-sidebar.open{ transform:translateX(0) }
+	.cart-header{ background:var(--orange); padding:14px 16px; display:flex; justify-content:space-between; align-items:center }
+	.cart-items{ flex:1; overflow-y:auto; padding:12px }
+	.cart-item{ display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--gray-border) }
+	.cart-item-img{ width:60px; height:60px; background:#f5f5f5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:28px }
+	.cart-item-info{ flex:1 }
+	.cart-item-name{ font-size:12px; font-weight:600 }
+	.cart-item-price{ font-size:14px; font-weight:700; color:#c0392b }
+	.qty-controls{ display:flex; align-items:center; gap:6px; margin-top:4px }
+	.qty-btn{ width:22px; height:22px; border:1px solid var(--gray-border); background:#fff; border-radius:3px; cursor:pointer }
+	.cart-footer{ padding:14px 16px; border-top:2px solid var(--gray-border) }
+	.cart-subtotal{ display:flex; justify-content:space-between; font-weight:700; margin-bottom:12px }
+	.checkout-btn{ width:100%; background:var(--orange); border:none; padding:13px; border-radius:6px; font-weight:700; color:var(--navy) }
+	.toast{ position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--navy); color:#fff; padding:10px 20px; border-radius:6px; font-weight:600; border-left:4px solid var(--orange); z-index:999; transition:transform .25s ease; pointer-events:none }
+	.toast.show{ transform:translateX(-50%) translateY(0) }
+
+	/* Admin */
+	.admin-layout{ display:flex; min-height:600px }
+	.admin-nav{ width:200px; background:var(--navy); color:#fff; flex-shrink:0 }
+	.admin-logo{ padding:20px 16px 12px; font-size:16px; font-weight:800; color:var(--orange); border-bottom:1px solid rgba(255,255,255,0.1) }
+	.admin-nav-item{ display:flex; align-items:center; gap:10px; padding:12px 16px; font-size:13px; cursor:pointer; color:rgba(255,255,255,0.75) }
+	.admin-nav-item.active{ background:rgba(255,153,0,0.15); color:#fff; border-left:3px solid var(--orange) }
+	.admin-main{ flex:1; padding:20px; background:#f0f2f5 }
+	.metric-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px }
+	.metric-card{ background:#fff; border-radius:8px; padding:16px; border:1px solid var(--gray-border) }
+
+	/* small screens */
+	@media (max-width:800px){
+		.prod-img{ height:120px }
+		.shop-sidebar{ display:none }
+		.admin-nav{ display:none }
+	}
+
+/* ==========================================================================
+   UX & Interaction Enhancements (Append below your existing CSS)
+   ========================================================================== */
+
+/* 1. Interactive Hover & Focus States */
+.add-cart-btn, .checkout-btn, .btn-primary {
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-cart-btn:hover, .checkout-btn:hover, .btn-primary:hover {
+    background-color: var(--orange-dark); /* Darkens on hover to signal interactivity */
+}
+
+.add-cart-btn:active, .checkout-btn:active, .btn-primary:active {
+    transform: scale(0.98); /* Subtle squish effect when clicked */
+}
+
+/* Accessible focus rings for keyboard navigation */
+.nav-search input:focus, 
+.nav-search select:focus,
+.add-cart-btn:focus,
+.checkout-btn:focus {
+    outline: 2px solid var(--orange-dark);
+    outline-offset: 1px;
+}
+
+/* 2. Image Ratio Optimization */
+.prod-img img, .cart-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Prevents raw images from stretching awkwardly */
+    padding: 8px;
+}
+
+/* 3. Product Card Hover Lift */
+.prod-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.prod-card:hover {
+    transform: translateY(-2px); /* Gives tactile depth to items */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* 4. Text Truncation for Product Names */
+.prod-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Wraps up to 2 lines, then adds an elegant '...' */
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    height: 36px; /* Keeps product grid heights pixel-perfectly aligned */
+}
+
+/* 4.1 Cart Item Name Truncation */	
+.cart-item-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 36px;
+}
+
+/* 5. Mobile Search UX Polish (< 800px) */
+@media (max-width: 800px) {
+    .topnav {
+        height: auto;
+        padding: 8px 12px;
+        flex-wrap: wrap; /* Allows search bar to drop down if needed */
+    }
+    
+    .nav-search {
+        order: 3; /* Places search bar on its own full-width line below logo */
+        flex-basis: 100%;
+        max-width: 100%;
+        margin-top: 6px;
+    }
+    
+    .nav-right {
+        margin-left: auto;
+    }
+    
+    .cart-sidebar {
+        width: 100%; /* Cart drawer goes full screen on mobile for easy thumb interaction */
+        top: 0;
+        height: 100%;
+    }
+}
