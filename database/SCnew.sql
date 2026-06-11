@@ -355,12 +355,6 @@ CREATE TABLE review (
     title VARCHAR(255),
     body TEXT,
 
-    -- status ENUM(
-    --     'PENDING',
-    --     'APPROVED',
-    --     'REJECTED'
-    -- ) DEFAULT 'PENDING',
-
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_review_variant
@@ -653,6 +647,7 @@ CREATE TABLE return_request (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     user_id BIGINT UNSIGNED NOT NULL,
+    order_id BIGINT UNSIGNED NOT NULL,
     reason VARCHAR(255) NOT NULL,
     status ENUM(
         'PENDING',
@@ -668,6 +663,10 @@ CREATE TABLE return_request (
     CONSTRAINT fk_return_request_user
         FOREIGN KEY (user_id)
         REFERENCES user(id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_return_request_order
+        FOREIGN KEY (order_id)
+        REFERENCES orders(id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -1094,6 +1093,7 @@ CREATE TABLE cart_activity (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
     user_id BIGINT UNSIGNED,
+    guest_session_id BIGINT UNSIGNED,
 
     variant_id BIGINT UNSIGNED NOT NULL,
 
@@ -1101,7 +1101,6 @@ CREATE TABLE cart_activity (
         'ADD',
         'REMOVE'
     ),
-
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id)
