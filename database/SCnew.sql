@@ -1109,7 +1109,15 @@ CREATE TABLE cart_activity (
 
 FOREIGN KEY (variant_id)
     REFERENCES product_variant(id)
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+FOREIGN KEY (guest_session_id)
+    REFERENCES guest_session(id)
+    ON DELETE CASCADE,
+CHECK(
+(user_id IS NOT NULL AND guest_session_id IS NULL)
+OR
+(user_id IS NULL AND guest_session_id IS NOT NULL)
+
 ) ENGINE=InnoDB;
 
 
