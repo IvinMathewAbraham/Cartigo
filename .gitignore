@@ -5,3 +5,4 @@ logs/
 .env
 docs/
 /server/models
+*.md
