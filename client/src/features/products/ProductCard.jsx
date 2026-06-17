@@ -1,28 +1,46 @@
-import { formatPrice, getDiscount, renderStars } from './productUtils'
+import React, { useState } from 'react';
 
+export default function ProductCard({ title, price, oldPrice, rating, reviewsCount, image, hasDiscount, discountText }) {
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
-export default function ProductCard({ product, onAddToCart }) {
-	const discount = getDiscount(product.was, product.price)
+  return (
+    <div className="product-show-card soft-elevation interactive-hover">
+      <button 
+        className={`wishlist-absolute-btn ${isWishlisted ? 'active' : ''}`}
+        onClick={() => setIsWishlisted(!isWishlisted)}
+      >
+        <span className="material-symbols-outlined" style={{ fontVariationSettings: isWishlisted ? "'FILL' 1" : "'FILL' 0" }}>
+          favorite
+        </span>
+      </button>
 
-	return (
-		<div className="prod-card">
-			{discount >= 30 && <div className="badge-corner">-{discount}%</div>}
-			<div className="prod-img">
-				<img
-					src={product.image}
-					alt={product.name}
-					className="product-image"
-				/>
-			</div>
-			<div className="prod-body">
-				<div className="prod-brand">{product.brand}</div>
-				<div className="prod-name">{product.name}</div>
-				<div><span className="stars">{renderStars(product.rating)}</span><span className="rev-count">({product.reviews.toLocaleString()})</span></div>
-				<div className="prod-price">{formatPrice(product.price)}</div>
-				<div className="prod-was">M.R.P: <s>{formatPrice(product.was)}</s> <span className="prod-save">({discount}% off)</span></div>
-				<div className="prime-badge"> FREE Delivery by Tomorrow</div>
-				<button className="add-cart-btn" onClick={()=>onAddToCart(product.id)}>Add to Cart</button>
-			</div>
-		</div>
-	)
+      {hasDiscount && <div className="discount-tag">{discountText}</div>}
+
+      <div className="product-card-image-box">
+        <img src={image} alt={title} />
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+        <h3 className="product-title-text">{title}</h3>
+        
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', color: '#ffb596' }}>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", fontSize: '16px' }}>star</span>
+          </div>
+          <span style={{ fontSize: '12px', fontWeight: '600' }}>{rating}</span>
+          <span style={{ fontSize: '12px', color: 'var(--on-surface-variant)' }}>({reviewsCount})</span>
+        </div>
+
+        <div className="pricing-flex-row">
+          <span className="current-price">${price.toFixed(2)}</span>
+          {oldPrice && <span className="old-price">${oldPrice.toFixed(2)}</span>}
+        </div>
+
+        <button className="add-to-cart-reveal-btn btn-active-scale">
+          <span className="material-symbols-outlined">shopping_cart</span>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  );
 }
