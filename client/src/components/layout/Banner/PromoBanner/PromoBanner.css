@@ -1,0 +1,133 @@
+.promo-banner {
+  position: relative;
+
+  height: 320px;
+  width: 100%;
+
+  border-radius: 24px;
+  overflow: hidden;
+
+  padding: 32px;
+
+  display: flex;
+  align-items: center;
+
+  transition: all 0.3s ease;
+}
+
+.promo-banner:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.12);
+}
+
+.promo-content {
+  position: relative;
+  z-index: 2;
+
+  max-width: 45%;
+}
+
+.promo-content p {
+  font-size: 1rem;
+  font-weight: 500;
+
+  margin-bottom: 10px;
+
+  opacity: 0.9;
+}
+
+.promo-content h3 {
+  font-size: 3rem;
+  line-height: 0.95;
+  font-weight: 800;
+
+  margin-bottom: 24px;
+}
+
+.promo-content button {
+  border: none;
+
+  background: white;
+  color: #111827;
+
+  padding: 12px 24px;
+
+  border-radius: 999px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.12);
+}
+
+
+
+.promo-image {
+  position: absolute;
+
+  right: 10px;
+  bottom: 0;
+
+  width: 52%;
+  height: 90%;
+
+  object-fit: contain;
+
+  z-index: 2;
+
+  transition: transform .3s ease;
+}
+
+.promo-banner:hover .promo-image {
+  transform: scale(1.05);
+}
+
+
+/* Patterns */
+
+.pattern-dots {
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,.12) 1.5px,
+      transparent 1.5px
+    );
+
+  background-size: 30px 30px;
+}
+
+.pattern-grid {
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.08) 1px,
+      transparent 1px
+    );
+
+  background-size: 28px 28px;
+}
+
+.promo-banner::before {
+  content: "";
+
+  position: absolute;
+
+  width: 320px;
+  height: 320px;
+
+  border-radius: 50%;
+
+  right: -100px;
+  top: -60px;
+
+  background: rgba(255,255,255,.12);
+
+  z-index: 1;
+}
