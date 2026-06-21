@@ -10,6 +10,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
-// need to use browser router for client-side routing, but it causes issues with direct refreshes on non-root paths.
-// For a production build, consider using HashRouter or configuring the server to handle client-side routing properly. why???
