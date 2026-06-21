@@ -1,0 +1,12 @@
+.product-description {
+  margin: 50px 0;
+}
+
+.product-description h2 {
+  margin-bottom: 20px;
+}
+
+.product-description p {
+  line-height: 1.8;
+  color: #4b5563;
+}
