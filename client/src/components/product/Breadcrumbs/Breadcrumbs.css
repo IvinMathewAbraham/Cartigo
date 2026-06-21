@@ -1,0 +1,11 @@
+.breadcrumbs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #6b7280;
+  font-size: .9rem;
+}
+
+.breadcrumbs strong {
+  color: #111827;
+}
