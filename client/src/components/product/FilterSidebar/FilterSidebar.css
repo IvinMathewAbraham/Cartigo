@@ -1,0 +1,34 @@
+.filter-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.filter-section {
+  margin-bottom: 32px;
+}
+
+.filter-section h3 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.filter-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.filter-section li {
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.filter-section li.active {
+  color: #0f4c97;
+  font-weight: 600;
+}
+
+.filter-section label {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
