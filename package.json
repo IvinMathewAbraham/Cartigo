@@ -5,15 +5,19 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server/index.js",
+    "client": "npm run dev --prefix client",
     "start": "node server/index.js",
     "db:migrate": "prisma migrate dev",
     "db:setup": "prisma migrate dev --name init",
     "db:generate": "prisma generate",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:seed": "node seed.js"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "axios": "^1.18.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.10.0",
@@ -29,6 +33,7 @@
     "mysql2": "^3.9.0"
   },
   "devDependencies": {
+    "concurrently": "^10.0.3",
     "nodemon": "^3.1.0",
     "prisma": "^5.22.0"
   }
