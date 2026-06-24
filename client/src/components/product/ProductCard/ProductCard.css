@@ -3,16 +3,19 @@
   min-width: 220px;
 }
 
+.marketplace-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block; /* Makes sure the link takes up the full card width/height */
+}
+
 .product-image-wrapper {
   height: 220px;
-
   background: #f4f5f7;
   border-radius: 14px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
 }
 
