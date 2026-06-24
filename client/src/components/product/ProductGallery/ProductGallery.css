@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Product Gallery Component Stylesheet
+   ========================================================================== */
+
+.gallery-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.thumbnail-list {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  overflow-x: auto;
+  scrollbar-width: none; /* Hide scrollbars for Firefox */
+}
+
+/* Hide scrollbars for Chrome, Safari, and Opera */
+.thumbnail-list::-webkit-scrollbar {
+  display: none;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  object-fit: contain;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  border-radius: var(--radius-md, 0.5rem);
+  padding: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.thumbnail:hover {
+  border-color: var(--color-primary, #004ac6);
+}
+
+.thumbnail.active {
+  border: 2px solid var(--color-primary, #004ac6);
+}
+
+.main-image {
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: var(--radius-lg, 0.75rem);
+  box-shadow: var(--shadow-sm, 0px 10px 30px rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.main-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   Responsive Desktop Layout Transformation
+   ========================================================================== */
+@media (min-width: 768px) {
+  .gallery-container {
+    flex-direction: row-reverse;
+  }
+  
+  .thumbnail-list {
+    flex-direction: column;
+    overflow-x: visible;
+  }
+}
