@@ -1,0 +1,191 @@
+/* ==========================================================================
+   Reviews Section Component Stylesheet
+   ========================================================================== */
+
+.reviews-section h2,
+.reviews-section h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-main, #141b2b);
+  margin-top: 0;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+
+.reviews-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+
+/* ==========================================================================
+   Left Side: Ratings Breakdown Summary Block
+   ========================================================================== */
+.reviews-summary-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.rating-huge-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.rating-huge-number {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--color-text-main, #141b2b);
+  line-height: 1;
+}
+
+/* Star bar metrics distribution layout grid */
+.rating-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rating-bar-label {
+  width: 16px;
+  color: var(--color-text-main, #141b2b);
+}
+
+.rating-bar-bg {
+  flex: 1;
+  height: 8px;
+  background-color: #f1f3ff; /* surface-container-low fill */
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+}
+
+.rating-bar-fill {
+  height: 100%;
+  background-color: var(--color-primary, #004ac6);
+  border-radius: var(--radius-full, 9999px);
+}
+
+.rating-bar-percent {
+  width: 40px;
+  text-align: right;
+  color: var(--color-text-muted, #434655);
+}
+
+.write-review-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 24px;
+  background-color: transparent;
+  color: var(--color-text-main, #141b2b);
+  border: 1px solid var(--color-text-muted, #737686);
+  border-radius: var(--radius-md, 0.5rem);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.write-review-btn:hover {
+  background-color: #f1f3ff;
+}
+
+/* ==========================================================================
+   Right Side: Review Items List & ReviewCard Template
+   ========================================================================== */
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Target classes matching inside ReviewCard modules */
+.review-card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 24px;
+  box-shadow: var(--shadow-sm, 0px 10px 30px rgba(0, 0, 0, 0.04));
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.review-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-main, #141b2b);
+  margin: 4px 0 0 0;
+}
+
+.review-card-date {
+  font-size: 12px;
+  color: var(--color-text-muted, #434655);
+}
+
+.review-card-body {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text-muted, #434655);
+  margin: 0 0 16px 0;
+}
+
+.review-card-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar-fallback {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full, 9999px);
+  background-color: var(--color-primary-light, #e1e8fd);
+  color: var(--color-primary, #004ac6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.user-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-main, #141b2b);
+}
+
+.verified-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--color-success, #16a34a);
+  background-color: #f0fdf4;
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+}
+
+/* ==========================================================================
+   Responsive Desktop Layout Split Transformation
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .reviews-layout {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  
+  .reviews-summary-block {
+    grid-column: span 4;
+  }
+  
+  .reviews-list {
+    grid-column: span 8;
+  }
+}
