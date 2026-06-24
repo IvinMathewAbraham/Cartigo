@@ -1,0 +1,292 @@
+/* =========================
+   PAGE LAYOUT
+========================= */
+.auth-page-container {
+  min-height: 100vh;
+  background: var(--surface, #f1f5f9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.auth-card-panel {
+  width: 100%;
+  /* CHANGED: Considerably lowered width for compact single-column utility layout */
+  max-width: 450px; 
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--surface-container-lowest, #ffffff);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  padding: 2.5rem; /* Generous internal form spacing */
+}
+
+.auth-form-container {
+  width: 100%;
+}
+
+/* =========================
+   BRANDING & HEADERS
+========================= */
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.brand-icon {
+  color: var(--primary, #006eff);
+  font-size: 32px !important;
+}
+
+.nav-brand {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--primary, #006eff);
+  letter-spacing: -0.03em;
+}
+
+.welcome-header {
+  margin-bottom: 24px;
+}
+
+.welcome-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 6px;
+}
+
+.welcome-header p {
+  font-size: 14px;
+  color: var(--on-surface-variant, #64748b);
+}
+
+/* =========================
+   ALERTS / ERROR FEEDBACK
+========================= */
+.auth-error-msg {
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* =========================
+   FORM CONFIGS
+========================= */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.input-field-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--on-surface-variant, #475569);
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.field-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--outline, #94a3b8);
+  font-size: 20px !important;
+}
+
+.input-with-icon input {
+  width: 100%;
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid var(--outline-variant, #cbd5e1);
+  background: var(--surface-container-low, #f8fafc);
+  padding-left: 44px;
+  padding-right: 44px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.input-with-icon input:focus {
+  outline: none;
+  border-color: var(--primary, #006eff);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  background: #ffffff;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--outline, #94a3b8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   METRICS & TOGGLES
+========================= */
+.form-flex-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--on-surface-variant, #475569);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.custom-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.forgot-password-link {
+  font-size: 13px;
+  color: var(--primary, #006eff);
+  text-decoration: none;
+}
+
+/* =========================
+   BUTTON ACTIONS
+========================= */
+.primary-action-btn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 110, 255, 0.12);
+  padding: 12px;
+  background: rgb(0, 110, 255);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.primary-action-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 110, 255, 0.2);
+}
+
+.primary-action-btn:disabled {
+  background: #cbd5e1;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.social-login-btn {
+  width: 100%;
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid var(--outline-variant, #cbd5e1);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  transition: all 0.2s ease;
+}
+
+.social-login-btn:hover {
+  background: #f8fafc;
+}
+
+.btn-active-scale:active {
+  transform: scale(0.99);
+}
+
+/* =========================
+   STRUCTURE DIVIDERS / UTILS
+========================= */
+.divider-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--outline-variant, #e2e8f0);
+}
+
+.divider-text {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--outline, #94a3b8);
+  letter-spacing: 0.5px;
+}
+
+.signup-redirect {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--on-surface-variant, #64748b);
+}
+
+.signup-link {
+  color: var(--primary, #006eff);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+a, .signup-link {
+  transition: opacity 0.2s;
+}
+
+a:hover, .signup-link:hover {
+  opacity: 0.8;
+}
+
+/* =========================
+   MOBILE CLEANUP
+========================= */
+@media (max-width: 480px) {
+  .auth-page-container {
+    padding: 0;
+    background: var(--surface-container-lowest, #ffffff);
+  }
+
+  .auth-card-panel {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 2rem 1.5rem;
+    min-height: 100vh;
+    justify-content: center;
+  }
+}
