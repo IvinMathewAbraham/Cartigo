@@ -248,6 +248,7 @@ model Order {
   items                OrderItem[]
   order_status_history order_status_history[]
   user                 User                   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_orders_user")
+  return_request       return_request[]
 
   @@index([userId], map: "fk_orders_user")
   @@map("orders")
@@ -291,16 +292,19 @@ model brand {
 }
 
 model cart_activity {
-  id              BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
-  user_id         BigInt?               @db.UnsignedBigInt
-  variant_id      BigInt                @db.UnsignedBigInt
-  action          cart_activity_action?
-  created_at      DateTime?             @default(now()) @db.Timestamp(0)
-  user            User?                 @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "cart_activity_ibfk_1")
-  product_variant ProductVariant        @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "cart_activity_ibfk_2")
+  id               BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id          BigInt?               @db.UnsignedBigInt
+  guest_session_id BigInt?               @db.UnsignedBigInt
+  variant_id       BigInt                @db.UnsignedBigInt
+  action           cart_activity_action?
+  created_at       DateTime?             @default(now()) @db.Timestamp(0)
+  user             User?                 @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "cart_activity_ibfk_1")
+  product_variant  ProductVariant        @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "cart_activity_ibfk_2")
+  guest_session    guest_session?        @relation(fields: [guest_session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "cart_activity_ibfk_3")
 
   @@index([user_id], map: "user_id")
   @@index([variant_id], map: "variant_id")
+  @@index([guest_session_id], map: "guest_session_id")
 }
 
 model coupon {
@@ -339,6 +343,7 @@ model guest_session {
   token                String                 @unique(map: "token") @db.VarChar(255)
   created_at           DateTime?              @default(now()) @db.Timestamp(0)
   cart                 Cart[]
+  cart_activity        cart_activity[]
   product_view_history product_view_history[]
   search_history       search_history[]
 }
@@ -545,16 +550,19 @@ model refund {
 model return_request {
   id                     BigInt                   @id @default(autoincrement()) @db.UnsignedBigInt
   user_id                BigInt                   @db.UnsignedBigInt
+  order_id               BigInt                   @db.UnsignedBigInt
   reason                 String                   @db.VarChar(255)
   status                 return_request_status?   @default(PENDING)
   created_at             DateTime?                @default(now()) @db.Timestamp(0)
   updated_at             DateTime?                @default(now()) @db.Timestamp(0)
   refund                 refund?
+  orders                 Order                    @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_return_request_order")
   user                   User                     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_return_request_user")
   return_request_history return_request_history[]
   return_request_item    return_request_item[]
 
   @@index([user_id], map: "fk_return_request_user")
+  @@index([order_id], map: "fk_return_request_order")
 }
 
 model return_request_history {
