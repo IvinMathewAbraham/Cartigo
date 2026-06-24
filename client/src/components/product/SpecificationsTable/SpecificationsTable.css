@@ -1,0 +1,69 @@
+/* ==========================================================================
+   Specifications Table Component Stylesheet
+   ========================================================================== */
+
+.specifications {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  border-radius: var(--radius-lg, 1rem);
+  padding: 32px;
+  box-shadow: var(--shadow-sm, 0px 10px 30px rgba(0, 0, 0, 0.04));
+}
+
+/* Changed target selectors slightly to support both h2 or h3 based on component markup */
+.specifications h2,
+.specifications h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-main, #141b2b);
+  margin: 0 0 32px 0;
+  letter-spacing: -0.01em;
+}
+
+.spec-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+}
+
+.spec-row:last-child {
+  border-bottom: none;
+}
+
+.spec-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted, #434655);
+  margin-bottom: 8px;
+}
+
+.spec-value {
+  font-size: 16px;
+  color: var(--color-text-main, #141b2b);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Responsive Desktop Grid Layout Alignment
+   ========================================================================== */
+@media (min-width: 768px) {
+  .spec-row {
+    /* 3-column structural map layout configuration distribution */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .spec-name {
+    margin-bottom: 0;
+    grid-column: span 1;
+  }
+  
+  .spec-value {
+    grid-column: span 2;
+  }
+}
