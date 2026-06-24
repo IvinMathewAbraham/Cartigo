@@ -1,0 +1,108 @@
+/* ==========================================================================
+   Related Products Grid Component Stylesheet
+   ========================================================================== */
+
+.related-products h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 32px;
+  color: var(--color-text-main, #141b2b);
+  letter-spacing: -0.01em;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gutter, 24px);
+}
+
+/* ==========================================================================
+   Modular ProductCard Sub-element Layout Setup 
+   ========================================================================== */
+.related-grid > * {
+  background-color: #ffffff;
+  border-radius: var(--radius-lg, 0.75rem);
+  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm, 0px 10px 30px rgba(0, 0, 0, 0.04));
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Premium micro-interaction bounce animation matching desktop standards */
+.related-grid > *:hover {
+  transform: scale(1.01);
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.related-grid img {
+  width: 100%;
+  height: 192px; /* Fixed sizing matching 48 units in standard grids */
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+.related-grid h5 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-main, #141b2b);
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Gracefully shortens excessively long titles */
+}
+
+.related-grid .product-category-tag {
+  font-size: 12px;
+  color: var(--color-text-muted, #434655);
+  margin-bottom: 12px;
+}
+
+/* Aligns details elegantly at the card base line */
+.related-grid .card-footer-row {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.related-grid .card-price {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-main, #141b2b);
+}
+
+.related-grid .add-to-cart-icon-btn {
+  background-color: var(--color-primary-light, #e1e8fd);
+  color: var(--color-primary, #004ac6);
+  border: none;
+  border-radius: var(--radius-md, 0.5rem);
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.related-grid .add-to-cart-icon-btn:hover {
+  background-color: var(--color-primary, #004ac6);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   Responsive Grid Transitions
+   ========================================================================== */
+@media (min-width: 640px) {
+  .related-grid { 
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+  }
+}
+
+@media (min-width: 1024px) {
+  .related-grid { 
+    grid-template-columns: repeat(4, minmax(0, 1fr)); 
+  }
+}
