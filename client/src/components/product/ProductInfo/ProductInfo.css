@@ -1,0 +1,151 @@
+/* ==========================================================================
+   Product Info Component Stylesheet
+   ========================================================================== */
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-badge {
+  background-color: var(--color-primary-light, #e1e8fd);
+  color: var(--color-primary, #004ac6);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-full, 9999px);
+  width: fit-content;
+  margin-bottom: 8px;
+}
+
+.product-info h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--color-text-main, #141b2b);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  color: #943700; /* Tertiary branding color for stars */
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.rating span {
+  color: var(--color-primary, #004ac6);
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.rating span:hover {
+  text-decoration: underline;
+}
+
+/* Container Card for Pricing & Stock Data */
+.price-section {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 24px;
+  box-shadow: var(--shadow-sm, 0px 10px 30px rgba(0, 0, 0, 0.04));
+  margin-bottom: 32px;
+}
+
+/* Horizontal alignment wrapper for price, old price, and discount badge */
+.price-section .price-display,
+.price-section > div:first-of-type {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.price-section h2 {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--color-text-main, #141b2b);
+  margin: 0;
+}
+
+.old-price {
+  font-size: 16px;
+  text-decoration: line-through;
+  color: var(--color-text-muted, #434655);
+  margin-bottom: 4px;
+}
+
+.discount {
+  background-color: #ffdad6; /* Error container background */
+  color: #93000a; /* High-contrast error text */
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-md, 0.5rem);
+  margin-bottom: 4px;
+}
+
+.monthly-finance {
+  font-size: 14px;
+  color: var(--color-text-muted, #434655);
+  margin: 0 0 16px 0;
+}
+
+.stock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-success, #16a34a);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+/* CTA Action Element Area */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cart-btn,
+.buy-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md, 0.5rem);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.cart-btn {
+  background-color: var(--color-primary, #004ac6);
+  color: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0, 74, 198, 0.2);
+}
+
+.cart-btn:hover {
+  opacity: 0.9;
+}
+
+.buy-btn {
+  background-color: transparent;
+  color: var(--color-primary, #004ac6);
+  border: 2px solid var(--color-primary, #004ac6);
+}
+
+.buy-btn:hover {
+  background-color: rgba(0, 74, 198, 0.05);
+}
+
+.cart-btn:active,
+.buy-btn:active {
+  transform: scale(0.97);
+}
