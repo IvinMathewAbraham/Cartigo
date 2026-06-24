@@ -1,0 +1,17 @@
+.review-card {
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.review-rating {
+  margin-bottom: 12px;
+  color: #f59e0b;
+}
