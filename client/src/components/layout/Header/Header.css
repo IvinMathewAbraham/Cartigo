@@ -1,27 +1,32 @@
+/* ==========================================================================
+   1. Header Core Setup & Wrapper Boundaries
+   ========================================================================== */
 .header {
   position: sticky;
   top: 0;
 
-  background: rgba(255,255,255,0.8);
-
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-
-  border-bottom: 1px solid rgba(255,255,255,0.3);
-
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
   z-index: 1000;
+  width: 100%;
 }
 
-/* ---------- Utility Bar ---------- */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
 
+/* ---------- Utility Top Bar ---------- */
 .utility-bar {
   background: #111827;
-  color: white;
+  color: #ffffff;
   font-size: 0.85rem;
 }
 
 .utility-content {
-  height: 38px;
+  height: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,63 +38,93 @@
 }
 
 .utility-right a {
-  color: white;
+  color: #ffffff;
   text-decoration: none;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
 }
 
-/* ---------- Main Navbar ---------- */
+.utility-right a:hover {
+  opacity: 1;
+}
 
+/* ==========================================================================
+   2. Main Navbar Row System (Large Fluid Search Variant)
+   ========================================================================== */
 .main-navbar {
-  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
 }
 
 .navbar-content {
-  height: 78px;
-
+  height: 80px;
   display: grid;
-
-  grid-template-columns:
-    180px
-    1fr
-    auto
-    auto
-    auto;
-
-  gap: 24px;
-
+  /* Left brand auto-scales, search fills the entire rest of the row space, actions block groups on right */
+  grid-template-columns: auto 1fr auto; 
+  gap: 48px; /* Adds premium structural space between elements */
   align-items: center;
+}
+
+.left-brand-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .logo {
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: #111827;
-
   letter-spacing: -1px;
 }
 
-.nav-menu {
-  display: flex;
-  gap: 24px;
-}
-
-.nav-menu a {
-  color: #111827;
+/* Logo Hyperlink Resets */
+a.logo {
   text-decoration: none;
-  font-weight: 500;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -1px;
+  display: inline-block;
+  user-select: none;
 }
 
+a.logo:hover {
+  color: #111827; /* Prevents default blue links overrides */
+}
+
+
+.hamburger-btn {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #111827;
+}
+
+/* ==========================================================================
+   3. Expanded Search Container Component
+   ========================================================================== */
 .search-container {
   display: flex;
   align-items: center;
-
-  height: 48px;
-
+  height: 46px;
   background: #f3f4f6;
-
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
+  width: 100%; /* Spans across the entire grid center track */
+  box-sizing: border-box;
+}
+
+.search-container svg {
+  color: #6b7280;
+  margin-left: 16px;
+  margin-right: 8px;
+  flex-shrink: 0;
 }
 
 .search-container input {
@@ -97,211 +132,236 @@
   border: none;
   background: transparent;
   outline: none;
-  font-size: .95rem;
+  font-size: 0.95rem;
+  color: #111827;
+  padding: 0;
+  height: 100%;
 }
 
 .search-btn {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 100%;
   border: none;
   background: #2563eb;
-  color: white;
+  color: #ffffff;
   cursor: pointer;
-}
-
-.action-icons {
-  display: flex;
-  gap: 16px;
-}
-
-.action-icons button {
-  width: 70px;
-  height: 44px;
-
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.15s ease;
+}
 
-  border: none;
-  background: transparent;
+.search-btn:hover {
+  background-color: #1d4ed8;
+}
 
+/* ==========================================================================
+   4. Right-Grouped Actions Panel & Location Module
+   ========================================================================== */
+.action-icons {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Space between location block and active item indicators */
+}
+
+.location-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
   cursor: pointer;
+  color: #111827;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: #f9fafb; /* Adds subtle separation contrast background */
+  border: 1px solid #e5e7eb;
+  transition: all 0.15s ease;
+  margin-right: 8px; /* Extra breathing space before action items */
+}
+
+.location-box:hover {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.location-box svg {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.location-box div {
+  display: flex;
+  flex-direction: column;
+}
+
+.location-box small {
+  font-size: 0.7rem;
+  color: #6b7280;
+  line-height: 1.2;
+}
+
+.location-box span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #111827;
+  white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   4. Right-Grouped Actions Panel & Location Module (Enhanced Dropdown)
+   ========================================================================== */
+.account-dropdown-wrapper {
+  position: relative;
+}
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border-radius: 12px; /* Smoother corner match */
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08), 0 4px 12px rgba(17, 24, 39, 0.03); /* Richer elevation shadow */
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transform-origin: top right;
+  animation: dropdownFadeIn 0.2s ease-out; /* Premium entry animation */
+}
+
+/* Dropdown Animation Entry */
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Shared styling for menu item links and action buttons */
+.account-dropdown a,
+.account-dropdown .dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  color: #374151; /* Softer text color for inner elements */
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+}
+
+/* Hover & Focus state for standard options */
+.account-dropdown a:hover,
+.account-dropdown .dropdown-btn:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+/* Divider Line Utility */
+.account-dropdown .dropdown-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 6px 8px;
+}
+
+/* Highlighted Logout Button styling */
+.account-dropdown .dropdown-btn.logout {
+  color: #dc2626; /* Warning red tone */
+}
+
+.account-dropdown .dropdown-btn.logout:hover {
+  background-color: #fef2f2; /* Subtle red hue tint */
+  color: #b91c1c;
 }
 
 .nav-action {
   display: flex;
   align-items: center;
   gap: 8px;
-
   background: transparent;
   border: none;
-
-  font-weight: 500;
-}
-
-.cart-count {
-  position: absolute;
-  top: -6px;
-  right: -8px;
-
-  width: 18px;
-  height: 18px;
-
-  border-radius: 50%;
-  background: #2563eb;
-  color: white;
-
-  font-size: 11px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cart-btn {
-  color: black;
-  position: relative;
-}
-/* ---------- Layout ---------- */
-
-.container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 32px;
-}
-
-.hamburger-btn {
-  display: none;
-
-  width: 44px;
-  height: 44px;
-
-  align-items: center;
-  justify-content: center;
-
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.location-box {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-
-  cursor: pointer;
-}
-
-.location-box small {
-  display: block;
-  color: #6b7280;
-}
-
-.location-box span {
-  font-size: .9rem;
   font-weight: 600;
+  font-size: 0.9rem;
+  color: #111827;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.nav-action:hover {
+  background-color: #f3f4f6;
 }
 
 
-
-/*media responsive adjustments for smaller screens */
-@media (max-width: 480px) {
-
-  .action-icons {
-    gap: 8px;
-  }
-
-  .action-icons button {
-    width: 36px;
-    height: 36px;
-  }
+.mobile-nav-portal-wrapper {
+  position: initial; 
 }
 
-
-
-@media (max-width: 992px) {
-
-  .nav-menu {
-    display: none;
+/* ==========================================================================
+   5. Responsive Viewport Scalability Rules
+   ========================================================================== */
+@media (max-width: 1150px) {
+  .navbar-content {
+    gap: 24px;
   }
-
-  .search-container {
-    max-width: 350px;
+  .location-box {
+    display: none; /* Safely strips nested box to prioritize search bar real estate on small tablets */
   }
 }
 
 @media (max-width: 768px) {
-
-  .utility-bar {
-    display: none;
-  }
-
   .navbar-content {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr; /* Shifts layout dynamically for mobile headers */
+    height: 68px;
     gap: 16px;
-    height: 70px;
   }
-
+  
   .search-container {
     display: none;
   }
-
-  .logo {
-    text-align: center;
-    font-size: 1.5rem;
-  }
-
+  
   .hamburger-btn {
     display: flex;
-    align-items: center;
-    justify-content: center;
+  }
+  
+  .action-icons {
+    margin-left: auto; /* Aligns tools to the right hand edge cleanly */
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
   }
 
-}
+  .action-icons {
+    gap: 4px;
+  }
 
-.mobile-menu {
-  position: fixed;
+  .nav-action span {
+    display: none; /* Keeps simple clean accessible visual icon hooks on tiny displays */
+  }
 
-  top: 0;
-  left: 0;
-
-  width: 280px;
-  height: 100vh;
-
-  background: white;
-
-  z-index: 2000;
-
-  padding: 30px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-
-  box-shadow: 5px 0 20px rgba(0,0,0,.15);
-}
-
-.mobile-menu a {
-  text-decoration: none;
-  color: #111827;
-  font-weight: 600;
-}
-
-.close-btn {
-  border: none;
-  background: none;
-
-  font-size: 30px;
-  cursor: pointer;
-
-  align-self: flex-end;
-} 
-
-.mobile-overlay {
-  position: fixed;
-  inset: 0;
-
-  background: rgba(0,0,0,0.4);
-
-  z-index: 1999;
+  .nav-action {
+    padding: 8px;
+  }
 }
