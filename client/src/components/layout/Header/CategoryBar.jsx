@@ -1,17 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./CategoryBar.css";
 
 const categories = [
   {
     name: "Electronics",
-    subcategories: [
-      "Laptops",
-      "Mobiles",
-      "Gaming",
-      "Monitors",
-      "Accessories",
-      "Components"
-    ]
+    subcategories: ["Laptops", "Mobiles", "Gaming", "Monitors", "Accessories", "Components"]
   },
   {
     name: "Fashion",
@@ -41,16 +35,13 @@ const categories = [
 
 export default function CategoryBar() {
   const [open, setOpen] = useState(false);
-  const [activeCategory, setActiveCategory] =
-    useState(categories[0]);
+  const [activeCategory, setActiveCategory] = useState(categories[0]);
 
   return (
     <div className="category-bar-wrapper">
-
-      <div className="category-bar">
-
+      <div className="container category-bar">
         <button
-          className="all-btn"
+          className={`all-btn ${open ? "active" : ""}`}
           onClick={() => setOpen(!open)}
         >
           ☰ All
@@ -58,61 +49,58 @@ export default function CategoryBar() {
 
         <div className="nav-links">
           {categories.map((cat) => (
-            <a
+            <Link
               key={cat.name}
-              href="#"
+              to={`/products?category=${encodeURIComponent(cat.name)}`}
               className="nav-link"
+              onClick={() => setOpen(false)}
             >
               {cat.name}
-            </a>
+            </Link>
           ))}
         </div>
-
       </div>
 
       {open && (
-        <div className="mega-menu">
+        <>
+          {/* Backdrop Click-Overlay to close menu safely */}
+          <div className="category-overlay" onClick={() => setOpen(false)} />
 
-          <div className="mega-sidebar">
-            {categories.map((cat) => (
-              <div
-                key={cat.name}
-                className={`mega-item ${
-                  activeCategory.name === cat.name
-                    ? "active"
-                    : ""
-                }`}
-                onMouseEnter={() =>
-                  setActiveCategory(cat)
-                }
-              >
-                <span>{cat.name}</span>
-                <span>›</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mega-content">
-
-            <h3>{activeCategory.name}</h3>
-
-            <div className="subcategory-grid">
-              {activeCategory.subcategories.map(
-                (sub) => (
-                  <a
-                    key={sub}
-                    href="#"
-                    className="subcategory-card"
+          <div className="container mega-menu-positioner">
+            <div className="mega-menu">
+              <div className="mega-sidebar">
+                {categories.map((cat) => (
+                  <div
+                    key={cat.name}
+                    className={`mega-item ${
+                      activeCategory.name === cat.name ? "active" : ""
+                    }`}
+                    onMouseEnter={() => setActiveCategory(cat)}
                   >
-                    {sub}
-                  </a>
-                )
-              )}
+                    <span>{cat.name}</span>
+                    <span>›</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mega-content">
+                <h3>{activeCategory.name}</h3>
+                <div className="subcategory-grid">
+                  {activeCategory.subcategories.map((sub) => (
+                    <Link
+                      key={sub}
+                      to={`/products?category=${encodeURIComponent(sub)}`}
+                      className="subcategory-card"
+                      onClick={() => setOpen(false)}
+                    >
+                      {sub}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
-
           </div>
-
-        </div>
+        </>
       )}
     </div>
   );
