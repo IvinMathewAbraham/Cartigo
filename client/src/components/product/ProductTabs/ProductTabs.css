@@ -1,0 +1,45 @@
+/* ==========================================================================
+   Product Tabs Component Stylesheet
+   ========================================================================== */
+
+.product-tabs {
+  position: sticky;
+  top: 64px; /* Sticks right below your fixed header navbar (64px) */
+  z-index: 40; /* Keeps it above descriptions and tables, but below core overlays */
+  background-color: rgba(249, 249, 255, 0.95); /* Semi-transparent background matching main bg */
+  backdrop-filter: blur(12px); /* Creates a premium glassy blur effect over background content */
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0 48px; /* Adds horizontal padding for better spacing on smaller screens */
+  display: flex;
+  gap: 32px;
+  margin: 0 auto 32px auto;
+  border-bottom: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  overflow-x: auto;
+  scrollbar-width: none; /* Hides horizontal scrollbar for Firefox */
+}
+
+/* Hides horizontal scrollbar for Chrome, Safari, and Opera */
+.product-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.product-tabs a {
+  padding: 16px 0;
+  text-decoration: none;
+  color: var(--color-text-muted, #434655);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color 0.2s ease-in-out;
+}
+
+.product-tabs a:hover {
+  color: var(--color-text-main, #141b2b);
+}
+
+/* Activated / Intercepted Scrolling Section Highlight state */
+.product-tabs a.active-tab {
+  color: var(--color-primary, #004ac6);
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-primary, #004ac6); /* Fixed the syntax error here */
+}
