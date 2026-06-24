@@ -1,33 +1,25 @@
+import { Link } from "react-router-dom";
 import "./Breadcrumbs.css";
 
-export default function Breadcrumbs({ items }) {
+export default function Breadcrumbs({ items = [] }) {
   return (
-    <div className="breadcrumbs">
-      {items.map((item, index) => (
-        <span key={index}>
-          {index === items.length - 1 ? (
-            <strong>{item}</strong>
-          ) : (
-            <>
-              <span>{item}</span>
-              <span className="separator">/</span>
-            </>
-          )}
-        </span>
-      ))}
-    </div>
+    <nav className="breadcrumbs" aria-label="breadcrumb">
+      {items.map((item, index) => {
+        const isLast = index === items.length - 1;
+
+        return (
+          <span key={index} className="breadcrumb-item">
+            {isLast ? (
+              <span className="active">{item.label}</span>
+            ) : (
+              <>
+                <Link to={item.path}>{item.label}</Link>
+                <span className="separator">/</span>
+              </>
+            )}
+          </span>
+        );
+      })}
+    </nav>
   );
 }
-
-{/* <Breadcrumbs
-  items={[
-    { label: "Home", path: "/" },
-    { label: "Electronics", path: "/electronics" },
-    { label: "Laptops", path: "/laptops" },
-    { label: "MacBook Pro" }
-  ]}
-/> 
-
-how do this work?
-
-*/}

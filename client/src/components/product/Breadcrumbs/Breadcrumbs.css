@@ -1,11 +1,42 @@
+/* ==========================================================================
+   Breadcrumbs Component Stylesheet
+   ========================================================================== */
+
 .breadcrumbs {
   display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  color: #6b7280;
-  font-size: .9rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px; /* Slightly widened to match page micro-spacing scales */
+  padding: 16px 48px; /* Consistent padding to match other section layouts */
+  font-size: 14px;
 }
 
-.breadcrumbs strong {
-  color: #111827;
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb-item a {
+  /* Links utilize the unified muted typography color from the main frame tokens */
+  color: var(--color-text-muted, #434655);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.breadcrumb-item a:hover {
+  /* Hovers dynamically switch to the main focus/primary color context */
+  color: var(--color-primary, #004ac6);
+}
+
+.breadcrumb-item .active {
+  /* High-contrast state matches the main dominant text color token */
+  color: var(--color-text-main, #141b2b);
+  font-weight: 600;
+}
+
+.separator {
+  /* Fallback color scales naturally matching light gray border states */
+  color: var(--color-text-muted, #737686);
+  opacity: 0.6;
 }
