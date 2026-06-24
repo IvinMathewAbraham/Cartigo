@@ -3,7 +3,7 @@
 CREATE DATABASE IF NOT EXISTS shopping_cart;
 USE shopping_cart;
 
-DROP TABLE IF EXISTS user_role, role_permission, user_session, user_verification, guest_session;
+DROP TABLE IF EXISTS user, role, permission, user_role, role_permission, user_session, user_verification, guest_session;
 DROP TABLE IF EXISTS address;
 DROP TABLE IF EXISTS category, brand, product, product_category, product_image, product_attribute, product_attribute_value, product_variant, variant_attribute_value, product_tag, product_tag_map, product_report;
 DROP TABLE IF EXISTS review, review_image, review_vote, review_report, product_review_summary;
@@ -17,11 +17,11 @@ DROP TABLE IF EXISTS notification_type, notification, notification_recipient;
 DROP TABLE IF EXISTS product_view_history, search_history, search_click_history, product_purchase_history, recommended_product, cart_activity;
 
 
+
 -- Security & RBAC
 
 CREATE TABLE user (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
 
@@ -1118,7 +1118,7 @@ CHECK(
 OR
 (user_id IS NULL AND guest_session_id IS NOT NULL)
 
-) ENGINE=InnoDB;
+) )ENGINE=InnoDB;
 
 
 
