@@ -1,0 +1,24 @@
+.listing-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.listing-layout {
+  display: flex;
+  gap: 32px;
+}
+
+.listing-content {
+  flex: 1;
+}
+
+@media (max-width: 992px) {
+  .listing-layout {
+    flex-direction: column;
+  }
+
+  .filter-sidebar {
+    width: 100%;
+  }
+}

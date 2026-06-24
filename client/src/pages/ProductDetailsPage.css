@@ -1,0 +1,128 @@
+/* ==========================================================================
+   1. Design Tokens & Core Variables
+   (Ensure these match your global or ProductListingPage tokens)
+   ========================================================================== */
+:root {
+  /* Color Palette */
+  --color-bg-main: #f9f9ff;
+  --color-text-main: #141b2b;
+  --color-text-muted: #434655;
+  --color-primary: #004ac6;
+  --color-primary-light: #e1e8fd;
+  --color-accent-orange: #fb641b;
+  --color-success: #16a34a;
+  --color-border: rgba(195, 198, 215, 0.4);
+  
+  /* Layout Constraints */
+  --max-width: 1280px;
+  --container-padding: 32px;
+  --section-gap: 64px;
+  --grid-gutter: 24px;
+  
+  /* Shared Components Styles */
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+  --radius-full: 9999px;
+  --shadow-sm: 0px 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+/* ==========================================================================
+   2. Global Structural Resets for the Page
+   ========================================================================== */
+body {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Unified Wrapper used to constrain all block layout sections */
+.product-hero,
+#description,
+#specifications,
+.reviews-section,
+.related-products {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  margin-bottom: var(--section-gap);
+  box-sizing: border-box;
+}
+
+/* Common Section Heading styles matching Listing standard */
+#description h2,
+#specifications h2,
+.reviews-section h2,
+.related-products h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-top: 0;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   3. Main Page Grid Component Layouts
+   ========================================================================== */
+
+/* Product Hero Block (Gallery + Info Component Wrapper) */
+.product-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+@media (min-width: 1024px) {
+  .product-hero {
+    /* Transforms into an asymmetric 12-column grid system */
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  /* Allocates space dynamically matching your markup distribution */
+  .product-hero > .gallery-container {
+    grid-column: span 7 / span 7;
+  }
+
+  .product-hero > .product-info {
+    grid-column: span 5 / span 5;
+  }
+}
+
+/* ==========================================================================
+   4. Layout Utilities For Cross-Component Polish
+   ========================================================================== */
+
+/* Shared Elevation / Drop Shadows */
+.custom-shadow,
+.main-image,
+.price-section,
+.spec-table,
+.related-grid > * {
+  box-shadow: var(--shadow-sm);
+}
+
+/* Micro-interaction transitions across standard hoverable card assets */
+.card-hover-effect {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-hover-effect:hover {
+  transform: scale(1.01);
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Universal Hide-Scrollbar Utility for slider/carousel rows */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
