@@ -13,6 +13,7 @@ import ProductDescription from "../components/product/ProductDescription/Product
 import SpecificationsTable from "../components/product/SpecificationsTable/SpecificationsTable";
 import ReviewsSection from "../components/product/ReviewsSection/ReviewsSection";
 import RelatedProducts from "../components/product/RelatedProducts/RelatedProducts";
+import VariantSelector from "../components/product/VariantSelector/VariantSelector";
 
 import Header from "../components/layout/Header/Header";
 
@@ -20,11 +21,22 @@ export default function ProductDetailsPage() {
   const { id } = useParams();
 
   const [product, setProduct] = useState(null);
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  const currentVariant = selectedVariant ?? product?.variants?.[0];
+
 
 
   useEffect(() => {
     loadProduct();
   }, [id]);
+
+  useEffect(() => {
+    if (product?.variants?.length) {
+      setSelectedVariant(product.variants[0]);
+    }
+  }, [product]);
+  useEffect(() => {
+  }, [selectedVariant]);
 
 
 
@@ -42,10 +54,10 @@ export default function ProductDetailsPage() {
   if (!product) {
     return <div>Loading...</div>;
   }
-const galleryImages =
-  product.images
-    ?.map((image) => getImageUrl(image.url))
-    .filter(Boolean) || [];
+  const galleryImages =
+    product.images
+      ?.map((image) => getImageUrl(image.url))
+      .filter(Boolean) || [];
 
   const uiProduct = {
     name: product?.name || "",
@@ -56,16 +68,15 @@ const galleryImages =
 
     reviewCount: 0,
 
-    price: product?.variants?.[0]?.price || 0,
+    price: currentVariant?.price || 0,
 
-    oldPrice: product?.variants?.[0]?.price || 0,
+    oldPrice: currentVariant?.price || 0,
 
     discount: 0,
 
-    inStock:
-      product?.variants?.some(
-        (variant) => variant.stock > 0
-      ) || false,
+    variant: currentVariant,
+
+    inStock: currentVariant?.stock > 0,
   };
 
 
@@ -90,7 +101,15 @@ const galleryImages =
       <section className="product-hero">
         <ProductGallery images={galleryImages} />
 
-        <ProductInfo product={uiProduct} /> 
+
+
+        <VariantSelector
+          variants={product.variants}
+          selectedVariant={selectedVariant}
+          onVariantChange={setSelectedVariant}
+        />
+
+        <ProductInfo product={uiProduct} />
         {/*create a functional add to cart button*/}
       </section>
 
