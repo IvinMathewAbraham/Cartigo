@@ -66,31 +66,42 @@ body {
 }
 
 /* ==========================================================================
-   3. Main Page Grid Component Layouts
+   3. Main Page Grid Component Layouts (Fixed Structure)
    ========================================================================== */
 
-/* Product Hero Block (Gallery + Info Component Wrapper) */
+/* Product Hero Block Container */
 .product-hero {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
+  gap: 32px;
   align-items: start;
   margin-top: 16px;
 }
 
 @media (min-width: 1024px) {
   .product-hero {
-    /* Transforms into an asymmetric 12-column grid system */
+    /* 12-Column asymmetrical master grid system */
     grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 48px;
   }
 
-  /* Allocates space dynamically matching your markup distribution */
+  /* 1. Gallery Container stays on the Left Column */
   .product-hero > .gallery-container {
     grid-column: span 7 / span 7;
+    grid-row: 1;
   }
 
+  /* 2. Variant Selector is pulled directly below the gallery on the Left */
+  .product-hero > .variant-selector {
+    grid-column: span 7 / span 7;
+    grid-row: 2;
+    margin-top: 24px; /* Space between gallery block and variants */
+  }
+
+  /* 3. Product Info Wrapper maps safely to the Right Column */
   .product-hero > .product-info {
     grid-column: span 5 / span 5;
+    grid-row: 1 / span 2; /* Spans the full height profile of the left side */
   }
 }
 
