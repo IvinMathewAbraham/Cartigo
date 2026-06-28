@@ -1,46 +1,88 @@
+/* ==========================================================================
+   Product Variant Selector Component Stylesheet
+   ========================================================================== */
+
 .variant-selector {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 0; /* Let the parent layout grid track handle vertical pacing */
 }
 
 .variant-group {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .variant-title {
-    font-size: 15px;
-    font-weight: 600;
+  font-size: 14px; /* Aligns with rating & stock sizing */
+  font-weight: 600;
+  color: var(--color-text-main, #141b2b);
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
 .variant-title span {
-    font-weight: 400;
-    color: #666;
+  font-weight: 400;
+  color: var(--color-text-muted, #434655);
+  margin-left: 4px;
 }
 
 .variant-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; /* Uniform grid gutter feel */
 }
 
+/* Base Variant Option Button */
 .variant-option {
-    padding: 10px 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: white;
-    cursor: pointer;
-    transition: 0.2s;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-main, #141b2b);
+  background-color: #ffffff;
+  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  border-radius: var(--radius-md, 0.5rem);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  user-select: none;
 }
 
+/* Hover State */
 .variant-option:hover {
-    border-color: #333;
+  border-color: var(--color-primary, #004ac6);
+  background-color: rgba(0, 74, 198, 0.02);
 }
 
+/* Active / Selected State (Harmonized with main branding) */
 .variant-option.active {
-    border-color: black;
-    background: black;
-    color: white;
+  border: 2px solid var(--color-primary, #004ac6);
+  background-color: var(--color-primary-light, #e1e8fd);
+  color: var(--color-primary, #004ac6);
+  font-weight: 600;
+  padding: 9px 19px; /* Prevents layout shift caused by 2px border */
+}
+
+/* Optional: Specialized visual treatment if a variant is an image/color swatch */
+.variant-option.swatch-option {
+  padding: 4px;
+  border-radius: var(--radius-md, 0.5rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.variant-option.swatch-option.active {
+  padding: 3px;
+}
+
+/* Disabled/Out of Stock State */
+.variant-option:disabled,
+.variant-option.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  background-color: var(--color-bg-main, #f9f9ff);
+  border-color: var(--color-border, rgba(195, 198, 215, 0.4));
 }
