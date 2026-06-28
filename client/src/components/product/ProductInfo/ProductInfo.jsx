@@ -11,13 +11,14 @@ export default function ProductInfo({ product }) {
   const [quantity, setQuantity] = useState(1);  
 
   const addCart = async () => {
-    console.log(product);
-    await handleAddToCart(product.defaultVariant.id, quantity);
+    console.log(product );
+    console.log(product.variant.id);
+    await handleAddToCart(product.variant.id, quantity);
 };
 
   return (
     <div className="product-info">
-
+      
       <span className="product-badge">
         {product.badge}
       </span>
