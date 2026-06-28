@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
-import { getCart, updateCartItem, removeCartItem } from '../api/cart';
+import { getCart, addToCart, updateCartItem, removeCartItem } from '../api/cart';
 
 const CartContext = createContext();
 
@@ -63,8 +63,22 @@ export function CartProvider({ children }) {
         }, 0);
     }, [cart]);
 
+    const handleAddToCart = async (variantId, quantity = 1) => {
+    try {
+        await addToCart(variantId, quantity);
+
+        // Refresh cart from server
+        await loadCart();
+
+        return true;
+    } catch (error) {
+        console.error("Failed to add to cart", error);
+        return false;
+    }
+};
+
     return (
-        <CartContext.Provider value={{ cart, loading, handleUpdateQty, handleRemove, cartTotal, refreshCart: loadCart }}>
+        <CartContext.Provider value={{ cart, loading, handleUpdateQty, handleRemove, cartTotal, handleAddToCart,     refreshCart: loadCart }}>
             {children}
         </CartContext.Provider>
     );
