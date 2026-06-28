@@ -90,7 +90,8 @@ const galleryImages =
       <section className="product-hero">
         <ProductGallery images={galleryImages} />
 
-        <ProductInfo product={uiProduct} />
+        <ProductInfo product={uiProduct} /> 
+        {/*create a functional add to cart button*/}
       </section>
 
       <ProductTabs />
