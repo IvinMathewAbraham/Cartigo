@@ -1,31 +1,29 @@
-import { useState } from "react";
-import "./QuantitySelector.css";
-
 export default function QuantitySelector({
-  quantity = 1,
-  onChange
+    quantity,
+    setQuantity,
 }) {
-  const [count, setCount] = useState(quantity);
+    return (
+        <div className="quantity-selector">
 
-  const increase = () => {
-    const newCount = count + 1;
-    setCount(newCount);
-    onChange?.(newCount);
-  };
+            <button
+                onClick={() =>
+                    quantity > 1 &&
+                    setQuantity(quantity - 1)
+                }
+            >
+                -
+            </button>
 
-  const decrease = () => {
-    if (count > 1) {
-      const newCount = count - 1;
-      setCount(newCount);
-      onChange?.(newCount);
-    }
-  };
+            <span>{quantity}</span>
 
-  return (
-    <div className="quantity-selector">
-      <button onClick={decrease}>−</button>
-      <span>{count}</span>
-      <button onClick={increase}>+</button>
-    </div>
-  );
+            <button
+                onClick={() =>
+                    setQuantity(quantity + 1)
+                }
+            >
+                +
+            </button>
+
+        </div>
+    );
 }
