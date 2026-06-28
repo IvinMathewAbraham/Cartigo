@@ -1,8 +1,20 @@
 import QuantitySelector from "../QuantitySelector/QuantitySelector";
 import "./ProductInfo.css";
 
+import { useState } from "react";
+
+import { useCart } from "../../../context/CartContext";
+
 export default function ProductInfo({ product }) {
-  
+  const { handleAddToCart } = useCart();
+
+  const [quantity, setQuantity] = useState(1);  
+
+  const addCart = async () => {
+    console.log(product);
+    await handleAddToCart(product.defaultVariant.id, quantity);
+};
+
   return (
     <div className="product-info">
 
@@ -35,10 +47,12 @@ export default function ProductInfo({ product }) {
           : "Out of Stock"}
       </p>
 
-      <QuantitySelector />
+      <QuantitySelector 
+      quantity={quantity}
+    setQuantity={setQuantity}/>
 
       <div className="action-buttons">
-        <button className="cart-btn">
+        <button className="cart-btn" onClick={addCart}>
           Add To Cart
         </button>
 
