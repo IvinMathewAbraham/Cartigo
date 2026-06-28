@@ -6,6 +6,7 @@ import { Heart, Star } from "lucide-react";
 import { getImageUrl } from "../../../utils/image";
 import "./ProductCard.css";
 
+import { useCart } from "../../../context/CartContext";
 
 export default function ProductCard({ product }) {
 
@@ -17,6 +18,18 @@ export default function ProductCard({ product }) {
 
   // Dynamically uses product._id or product.id depending on your schema
   const productId = product._id || product.id;
+
+  const { handleAddToCart } = useCart();
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    await handleAddToCart(
+      product.defaultVariant.id,
+      1
+    );
+  };
 
   return (
     <Link to={`/products/${productId}`} className="marketplace-card-link">
@@ -44,11 +57,25 @@ export default function ProductCard({ product }) {
           </div>
 
           <div className="price-row">
-            <span className="current-price">₹{product.price}</span>
+            <span className="current-price">
+              ₹{product.price}
+            </span>
+
             {product.oldPrice && (
-              <span className="old-price">₹{product.oldPrice}</span>
+              <span className="old-price">
+                ₹{product.oldPrice}
+              </span>
             )}
           </div>
+
+          <button
+            className="add-cart-btn"
+            onClick={handleAdd}
+          >
+            Add to Cart
+          </button>
+
+
         </div>
       </div>
     </Link>
