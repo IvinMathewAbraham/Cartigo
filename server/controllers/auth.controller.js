@@ -184,12 +184,11 @@ export const logout = (
     });
 };
 
-export const me = async (
-    req,
-    res
-) => {
+
+export const me = async (req, res) => {
     try {
         return res.status(200).json({
+            success: true,
             user: {
                 id: req.user.id,
                 email: req.user.email,
@@ -198,16 +197,22 @@ export const me = async (
                 phone: req.user.phone,
                 isVerified: req.user.is_verified,
                 isActive: req.user.is_active,
+                roles: req.user.user_role.map(
+                    (userRole) => userRole.role.name
+                ),
             },
         });
     } catch (error) {
         console.error(error);
 
         return res.status(500).json({
+            success: false,
             message: "Server error",
         });
     }
 };
+
+
 
 export const updateProfile = async (req, res) => {
     try {
