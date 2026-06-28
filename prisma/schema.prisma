@@ -117,7 +117,7 @@ model Product {
   @@index([brand_id], map: "fk_product_brand")
   @@index([primary_category_id], map: "fk_product_primary_category")
   @@map("product")
-}
+} 
 
 model ProductImage {
   id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
