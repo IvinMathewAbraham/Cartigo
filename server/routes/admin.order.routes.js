@@ -4,24 +4,19 @@ import express from "express";
 import { protect } from "../middleware/auth.middleware.js";
 import { updateOrderStatusController,getAllOrdersController,getOrderDetailsController } from "../controllers/order.controller.js";
 
+import { authorize } from "../middleware/auth.middleware.js";
 
 
 const router = express.Router();
 
-router.get(
-  "/",
-  protect,
-  getAllOrdersController
-);
+// GET /api/admin/orders
+router.get("/",protect,authorize("ADMIN"),getAllOrdersController);
 
 // PATCH /api/admin/orders/:id/status
-router.patch("/:id/status", protect, updateOrderStatusController);
+router.patch("/:id/status", protect, authorize("ADMIN"), updateOrderStatusController);
 
-router.get(
-  "/:id",
-  protect,
-  getOrderDetailsController
-);
+// GET /api/admin/orders/:id
+router.get("/:id",protect,authorize("ADMIN"),getOrderDetailsController);
 
 
 export default router;
