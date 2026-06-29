@@ -21,6 +21,8 @@ export default function ProductListingPage() {
   const [limit, setLimit] = useState(12);
   const [loading, setLoading] = useState(true);
 
+  console.log("Products:", products);
+
   const [searchParams] = useSearchParams();
 
   const search = searchParams.get("search") || "";
