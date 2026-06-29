@@ -1,6 +1,11 @@
+/* ==========================================================================
+   Marketplace Product Card Component Stylesheet
+   ========================================================================== */
+
 .marketplace-card {
   position: relative;
   min-width: 220px;
+  background-color: transparent;
 }
 
 .marketplace-card-link {
@@ -9,94 +14,143 @@
   display: block; /* Makes sure the link takes up the full card width/height */
 }
 
+/* Container for product asset visual presentation */
 .product-image-wrapper {
   height: 220px;
   background: #f4f5f7;
-  border-radius: 14px;
+  border-radius: var(--radius-lg, 0.75rem);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
 }
 
 .product-image-wrapper img {
   width: 75%;
   height: 75%;
   object-fit: contain;
+  transition: transform 0.3s ease-in-out;
 }
 
+/* Card Micro-interaction zoom effect on global wrapper hover */
+.marketplace-card-link:hover .product-image-wrapper img {
+  transform: scale(1.05);
+}
+
+/* Floating Action Overlay Element: Wishlist Toggle Frame */
 .wishlist-icon {
   position: absolute;
-
   top: 12px;
   right: 12px;
-
   width: 34px;
   height: 34px;
-
   border: none;
-  border-radius: 50%;
-
-  background: white;
-
+  border-radius: var(--radius-full, 9999px);
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  box-shadow: var(--shadow-sm, 0px 4px 12px rgba(0, 0, 0, 0.05));
   cursor: pointer;
-
   z-index: 2;
+  transition: transform 0.2s ease-in-out, background-color 0.2s;
 }
 
+.wishlist-icon:hover {
+  transform: scale(1.08);
+  background-color: var(--color-bg-main, #f9f9ff);
+}
+
+.wishlist-icon:active {
+  transform: scale(0.95);
+}
+
+/* Meta Data Context Rows Typography and Spacing */
 .product-details {
   margin-top: 14px;
 }
 
 .product-details h3 {
-  font-size: .95rem;
+  font-size: 14px;
   line-height: 1.4;
-
   font-weight: 500;
-  color: #111827;
-
+  color: var(--color-text-main, #141b2b);
+  margin: 0;
+  
+  /* Multiline truncated line clamp constraints */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-
   overflow: hidden;
 }
 
 .rating-row {
   margin-top: 8px;
-
   display: flex;
   align-items: center;
   gap: 2px;
-
-  color: #0f4c97;
+  color: #943700; /* Coordinated theme rating star color accent */
+  font-size: 14px;
 }
 
 .rating-row span {
   margin-left: 4px;
-  color: #6b7280;
-  font-size: .85rem;
+  color: var(--color-text-muted, #434655);
+  font-size: 12px;
 }
 
 .price-row {
   margin-top: 8px;
-
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .current-price {
-  font-size: 1.35rem;
+  font-size: 18px;
   font-weight: 700;
+  color: var(--color-text-main, #141b2b);
 }
 
 .old-price {
-  color: #9ca3af;
+  color: var(--color-text-muted, #434655);
+  font-size: 14px;
   text-decoration: line-through;
+  opacity: 0.75;
+}
+
+/* Floating Action Overlay Element: Direct Quick Add CTA Button */
+.add-cart-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  height: 48px; /* Fixed sizing dimensions to make a crisp pill shape button */
+  width: 96px;
+  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
+  border-radius: var(--radius-md, 0.5rem);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm, 0px 4px 12px rgba(0, 0, 0, 0.05));
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-cart-btn:hover {
+  border-color: var(--color-primary, #004ac6);
+  color: var(--color-primary, #004ac6);
+  transform: translateY(-2px);
+}
+
+.add-cart-btn:active {
+  transform: scale(0.95);
+}
+
+/* Skeleton Loading Component State UI Layer */
+.product-card-loading {
+  position: relative;
+  min-width: 220px;
+  height: 320px;
+  background: var(--color-border, rgba(195, 198, 215, 0.2));
+  border-radius: var(--radius-lg, 0.75rem);
 }

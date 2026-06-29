@@ -1,5 +1,3 @@
-// client/src/components/ProductCard.jsx
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Heart, Star } from "lucide-react";
@@ -9,39 +7,45 @@ import "./ProductCard.css";
 import { useCart } from "../../../context/CartContext";
 
 export default function ProductCard({ product }) {
+  const { handleAddToCart } = useCart();
+
+  const productId = product._id || product.id;
+  const variant = product.variants?.[0];
+  
 
   const handleWishlistClick = (e) => {
     e.preventDefault();
-    e.stopPropagation(); // Prevents clicking the heart from triggering the Link
+    e.stopPropagation();
     console.log("Wishlist clicked");
   };
-
-  // Dynamically uses product._id or product.id depending on your schema
-  const productId = product._id || product.id;
-
-  const { handleAddToCart } = useCart();
 
   const handleAdd = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    await handleAddToCart(
-      product.defaultVariant.id,
-      1
-    );
+    if (!variant) return;
+
+    await handleAddToCart(variant.id, 1);
   };
 
   return (
-    <Link to={`/products/${productId}`} className="marketplace-card-link">
+    <Link
+      to={`/products/${productId}`}
+      className="marketplace-card-link"
+    >
       <div className="marketplace-card">
-        <button className="wishlist-icon" onClick={handleWishlistClick}>
+        <button
+          className="wishlist-icon"
+          onClick={handleWishlistClick}
+        >
           <Heart size={16} />
         </button>
 
         <div className="product-image-wrapper">
-          <img src={getImageUrl(
-            product.images?.find((img) => img.url)?.url
-          )} alt={product.name} />
+          <img
+            src={getImageUrl(product.images?.[0]?.url)}
+            alt={product.name}
+          />
         </div>
 
         <div className="product-details">
@@ -53,12 +57,12 @@ export default function ProductCard({ product }) {
             <Star size={14} fill="currentColor" />
             <Star size={14} fill="currentColor" />
             <Star size={14} />
-            <span>({product.reviews})</span>
+            <span>({product.reviews ?? 0})</span>
           </div>
 
           <div className="price-row">
             <span className="current-price">
-              ₹{product.price}
+              ₹{variant?.price ?? 0}
             </span>
 
             {product.oldPrice && (
@@ -71,11 +75,10 @@ export default function ProductCard({ product }) {
           <button
             className="add-cart-btn"
             onClick={handleAdd}
+            disabled={!variant}
           >
             Add to Cart
           </button>
-
-
         </div>
       </div>
     </Link>
