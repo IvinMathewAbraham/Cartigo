@@ -98,31 +98,6 @@ export default function ProductManagement() {
           </nav>
         </aside>
 
-        {/* Top AppBar Shell */}
-        {/* <header className="top-appbar">
-          <div className="flex items-center gap-md" style={{ display: 'flex', alignItems: 'center' }}>
-            <div className="relative" style={{ position: 'relative' }}>
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }}>search</span>
-              <input className="bg-surface-container-low border-none rounded-xl py-2 pl-10 pr-4 text-body-md" style={{ paddingLeft: '40px' }} placeholder="Search products..." type="text" />
-            </div>
-          </div>
-          <div className="flex items-center gap-lg" style={{ display: 'flex', alignItems: 'center' }}>
-            <div className="flex items-center gap-sm cursor-pointer group" style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-              <div className="profile-avatar-container">
-                {!avatarError ? (
-                  <img 
-                    alt="User Profile" 
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100&q=80" 
-                    onError={() => setAvatarError(true)}
-                  />
-                ) : (
-                  <div className="profile-avatar-fallback" style={{ display: 'flex' }}>AU</div>
-                )}
-              </div>
-              <span className="font-label-md text-label-md group-hover:text-primary transition-colors">Admin User</span>
-            </div>
-          </div>
-        </header> */}
 
         {/* Main Content Canvas */}
         <main className="main-canvas">
