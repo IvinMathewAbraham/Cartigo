@@ -47,7 +47,6 @@ export const getProducts = async ({
   limit = 12,
   search = "",
 }) => {
-
   const skip = (page - 1) * limit;
 
   const where = {
@@ -73,6 +72,18 @@ export const getProducts = async ({
           },
           take: 1,
         },
+
+        variants: {
+          where: {
+            is_active: true,
+          },
+
+          take: 1,
+
+          include: {
+            inventory: true,
+          },
+        },
       },
 
       skip,
@@ -95,7 +106,6 @@ export const getProducts = async ({
     limit,
   };
 };
-
 export const createProduct = async (data) => {
   return prisma.product.create({
     data: {
