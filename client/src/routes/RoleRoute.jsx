@@ -1,11 +1,8 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-export default function RoleRoute({
-    children,
-    roles
-}) {
-
+// 1. Give 'roles' a default empty array fallback []
+export default function RoleRoute({ children, roles = [] }) {
     const { user, loading } = useAuth();
 
     if (loading) {
@@ -16,9 +13,10 @@ export default function RoleRoute({
         return <Navigate to="/login" replace />;
     }
 
-    const allowed = user.roles.some(role =>
+    // 2. Added optional chaining (?.) in case user.roles is ever missing
+    const allowed = user?.roles?.some(role => 
         roles.includes(role)
-    );
+    ) ?? false;
 
     if (!allowed) {
         return <Navigate to="/" replace />;
