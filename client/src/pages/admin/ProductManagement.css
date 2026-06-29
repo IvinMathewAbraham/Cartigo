@@ -27,7 +27,7 @@
 .sidebar-shell {
   position: fixed;
   left: 0;
-  top: 0;
+  top: 50;
   height: 100%;
   width: 256px;
   background-color: var(--surface-container-lowest);
@@ -35,7 +35,7 @@
   display: flex;
   flex-direction: column;
   padding: 24px 16px;
-  z-index: 50;
+  z-index: 30;
   box-sizing: border-box;
 }
 
@@ -58,7 +58,7 @@
 
 .main-canvas {
   margin-left: 256px;
-  padding-top: 64px;
+  padding-top: 12px;
   padding-bottom: 96px;
   padding-left: 24px;
   padding-right: 24px;
@@ -67,9 +67,8 @@
 }
 
 .content-wrapper {
-  max-w: 1440px;
   margin: 0 auto;
-  padding: 24px 0;
+  padding: 0;
 }
 
 .fixed-action-footer {
@@ -361,8 +360,10 @@
 
 /* Drag State Modifier */
 .bg-dragging {
-  background-color: rgba(103, 80, 164, 0.5); /* Falls back cleanly with design tokens */
+  background-color: rgba(103, 80, 164, 0.08) !important;
+  border-color: var(--primary) !important;
 }
+
 
 /* SEO Palette Values */
 .seo-meta-title {
@@ -395,7 +396,7 @@
 
 /* Fallback UI if Image link breaks */
 .profile-avatar-fallback {
-  display: none;
+  display: flex; /* Allow layout to be driven conditionally by React instead of hard-hiding it */
   font-weight: bold;
   font-size: 12px;
   width: 100%;
