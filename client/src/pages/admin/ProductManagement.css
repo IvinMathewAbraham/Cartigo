@@ -1,0 +1,406 @@
+/* Design System Custom Properties (Tokens) */
+:root {
+  --primary: #6750a4; /* Fallback theme color */
+  --primary-container: #eaddff;
+  --on-surface: #1d1b20;
+  --on-surface-variant: #49454f;
+  --surface: #f7f9fb;
+  --surface-container-low: #f3f0f4;
+  --surface-container-lowest: #ffffff;
+  --outline-variant: #cac4d0;
+  --outline: #79747e;
+  --error: #b3261e;
+  
+  --radius-xl: 12px;
+  --radius-lg: 8px;
+}
+
+/* Global / Container Shells */
+.page-container {
+  color: var(--on-surface);
+  background-color: var(--surface);
+  font-family: sans-serif;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.sidebar-shell {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 256px;
+  background-color: var(--surface-container-lowest);
+  border-right: 1px solid var(--outline-variant);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  z-index: 50;
+  box-sizing: border-box;
+}
+
+.top-appbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 64px;
+  width: calc(100% - 256px);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-b: 1px solid var(--outline-variant);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 40;
+  box-sizing: border-box;
+}
+
+.main-canvas {
+  margin-left: 256px;
+  padding-top: 64px;
+  padding-bottom: 96px;
+  padding-left: 24px;
+  padding-right: 24px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.content-wrapper {
+  max-w: 1440px;
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+.fixed-action-footer {
+  position: fixed;
+  bottom: 0;
+  left: 256px;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--outline-variant);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 40;
+  box-sizing: border-box;
+}
+
+/* Nav links */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.nav-link:hover {
+  background-color: var(--surface-container-low);
+}
+
+.nav-link-active {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  color: var(--primary);
+  font-weight: bold;
+  border-right: 2px solid var(--primary);
+  background-color: var(--surface-container-low);
+  text-decoration: none;
+}
+
+/* Structural Layout Grids */
+.layout-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.col-main {
+  grid-column: span 8;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.col-side {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.grid-half {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Cards */
+.bento-card-section {
+  background-color: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+}
+
+.bento-card-table-section {
+  background-color: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+/* Form Styling */
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--on-surface-variant);
+  margin-bottom: 8px;
+}
+
+.form-label-xs {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--on-surface-variant);
+  margin-bottom: 4px;
+}
+
+.form-input {
+  width: 100%;
+  background-color: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.form-select {
+  width: 100%;
+  background-color: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  font-size: 14px;
+  outline: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+/* Rich Text Editor Module */
+.text-editor-container {
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.text-editor-toolbar {
+  background-color: var(--surface-container-low);
+  padding: 8px;
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.text-editor-btn {
+  padding: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.text-editor-btn:hover {
+  background-color: var(--outline-variant);
+}
+
+.text-editor-textarea {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+/* Media Gallery Drop Zone */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.drag-upload-zone {
+  grid-column: span 2;
+  grid-row: span 2;
+  border: 2px dashed var(--outline-variant);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.drag-upload-zone:hover {
+  border-color: var(--primary);
+  background-color: rgba(103, 80, 164, 0.05);
+}
+
+/* Buttons */
+.btn-icon-interactive {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.btn-icon-interactive:hover {
+  color: var(--primary);
+}
+
+.btn-outline-primary {
+  padding: 12px 24px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  color: var(--primary);
+  background: transparent;
+  border: 1px solid var(--primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: rgba(103, 80, 164, 0.08);
+}
+
+.btn-filled-primary {
+  padding: 12px 32px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+.btn-filled-primary:hover {
+  filter: brightness(1.1);
+}
+
+
+/* --- Appended Refactored Custom Classes --- */
+
+/* Icon Animations & Transformations */
+.icon-toggle-rotate {
+  transition: transform 0.3s ease-in-out;
+  display: inline-block;
+}
+
+.rotate-icon {
+  transform: rotate(180deg);
+}
+
+/* Smooth Dynamic Heights Content Drawer */
+.section-collapse-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+}
+
+.section-collapse-content.section-open {
+  max-height: var(--scroll-height, 1000px);
+}
+
+/* Material Design Icon Font-Sizes */
+.editor-icon-size {
+  font-size: 20px;
+}
+
+.upload-icon-size {
+  font-size: 48px;
+}
+
+.add-attribute-icon-size {
+  font-size: 18px;
+}
+
+.status-visibility-icon-size {
+  font-size: 20px;
+}
+
+.tag-close-icon-size {
+  font-size: 14px;
+}
+
+/* Drag State Modifier */
+.bg-dragging {
+  background-color: rgba(103, 80, 164, 0.5); /* Falls back cleanly with design tokens */
+}
+
+/* SEO Palette Values */
+.seo-meta-title {
+  color: #1a0dab;
+}
+
+.seo-meta-url {
+  color: #006621;
+}
+
+/* User Profile Avatar Frame */
+.profile-avatar-container {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary-container);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.profile-avatar-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fallback UI if Image link breaks */
+.profile-avatar-fallback {
+  display: none;
+  font-weight: bold;
+  font-size: 12px;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
