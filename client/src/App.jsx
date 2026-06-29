@@ -5,7 +5,7 @@ import { CartProvider } from "./context/CartContext";
 
 import GuestRoute from "./routes/GuestRoute";
 import ProtectedRoute from "./routes/ProtectedRoute";
-// import RoleRoute from "./routes/RoleRoute";
+import RoleRoute from "./routes/RoleRoute";
 
 import HomePage from "./pages/HomePage";
 import ProductListingPage from "./pages/ProductListingPage";
@@ -14,6 +14,7 @@ import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
+import ProductManagement from "./pages/admin/ProductManagement";
 
 import "./App.css";
 
@@ -81,6 +82,15 @@ export default function App() {
                             }
                         />
 
+                        <Route
+                            path="/admin/products"
+                            element={
+                                <RoleRoute roles={['ADMIN']}>
+                                    <ProductManagement />
+                                </RoleRoute>
+                            }
+                        />
+
                     </Routes>
                 </CartProvider>
             </AuthProvider>
@@ -90,7 +100,7 @@ export default function App() {
 
 
 {/* // import CheckoutPage from './pages/CheckoutPage';
-// import ProfilePage from './pages/ProfilePage';
+    
 // import OrdersPage from './pages/OrdersPage';
 // import NotFoundPage from './pages/NotFoundPage'; */}
 
