@@ -97,22 +97,3 @@ export default function App() {
         </BrowserRouter>
     );
 }
-
-
-{/* // import CheckoutPage from './pages/CheckoutPage';
-    
-// import OrdersPage from './pages/OrdersPage';
-// import NotFoundPage from './pages/NotFoundPage'; */}
-
-
-{/* <Route path="/products" element={<ProductsPage />} />
-
-
-        <Route path="/checkout" element={<CheckoutPage />} />
-
-
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/orders" element={<OrdersPage />} />
-
-
-        <Route path="*" element={<NotFoundPage />} /> */}
