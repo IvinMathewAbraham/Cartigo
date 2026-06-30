@@ -15,6 +15,8 @@ import wishlistRouter from "./routes/wishlist.routes.js";
 import addressRouter from "./routes/address.routes.js";
 import orderRouter from "./routes/order.routes.js";
 import adminOrderRouter  from "./routes/admin.order.routes.js"
+import categoryRouter from "./routes/category.routes.js"; 
+import brandRouter from "./routes/brand.routes.js"; 
 
 // Load environment variables from .env file
 dotenv.config();
@@ -68,6 +70,8 @@ app.use("/api/wishlist", wishlistRouter);
 app.use("/api/addresses", addressRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/admin/orders",adminOrderRouter);
+app.use("/api/categories", categoryRouter);
+app.use("/api/brands", brandRouter);
 
 // 404 Not Found handler
 app.use((req, res) => {
