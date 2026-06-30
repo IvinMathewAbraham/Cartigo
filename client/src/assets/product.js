@@ -6,7 +6,7 @@ const products = [
     oldPrice: 119999,
     rating: 4.8,
     reviews: 1245,
-    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+    image: "http://localhost:3000/uploads/products/iphone16pro-back.jpg",
     badge: "Best Seller"
   },
   {
