@@ -9,7 +9,6 @@ export default function GuestRoute({ children }) {
     }
 
     if (user) {
-        // Safe check with optional chaining
         if (user?.roles?.includes("ADMIN")) {
             return <Navigate to="/admin" replace />;
         }
