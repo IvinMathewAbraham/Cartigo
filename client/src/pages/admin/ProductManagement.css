@@ -27,14 +27,14 @@
 .sidebar-shell {
   position: fixed;
   left: 0;
-  top: 50;
+  top: 50px; /* FIXED: Added correct top alignment and positioning context */
   height: 100%;
   width: 256px;
   background-color: var(--surface-container-lowest);
   border-right: 1px solid var(--outline-variant);
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
+  padding: 88px 16px 24px 16px; /* Optimized padding to avoid header overlaps */
   z-index: 30;
   box-sizing: border-box;
 }
@@ -47,7 +47,7 @@
   width: calc(100% - 256px);
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
-  border-b: 1px solid var(--outline-variant);
+  border-bottom: 1px solid var(--outline-variant); /* FIXED: Altered 'border-b' to valid 'border-bottom' */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -58,8 +58,8 @@
 
 .main-canvas {
   margin-left: 256px;
-  padding-top: 12px;
-  padding-bottom: 96px;
+  padding-top: 24px; /* Balanced canvas spacing */
+  padding-bottom: 120px; /* Accounts for the fixed footer canvas overlap */
   padding-left: 24px;
   padding-right: 24px;
   min-height: 100vh;
@@ -69,6 +69,7 @@
 .content-wrapper {
   margin: 0 auto;
   padding: 0;
+  max-width: 1200px; /* Provides reading bounds on ultra-wide viewports */
 }
 
 .fixed-action-footer {
@@ -81,7 +82,7 @@
   border-top: 1px solid var(--outline-variant);
   padding: 16px 24px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Aligns primary submission hooks elegantly to the right */
   align-items: center;
   z-index: 40;
   box-sizing: border-box;
@@ -96,6 +97,7 @@
   color: var(--on-surface-variant);
   text-decoration: none;
   transition: background-color 0.2s ease;
+  border-radius: var(--radius-lg);
 }
 
 .nav-link:hover {
@@ -112,6 +114,7 @@
   border-right: 2px solid var(--primary);
   background-color: var(--surface-container-low);
   text-decoration: none;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
 }
 
 /* Structural Layout Grids */
@@ -122,10 +125,16 @@
 }
 
 .col-main {
-  grid-column: span 8;
+  grid-column: span 12; /* Default fallback responsive footprint */
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .col-main {
+    grid-column: span 12; /* Keeps matrix container comfortable on wide screens */
+  }
 }
 
 .col-side {
@@ -153,10 +162,11 @@
   background-color: var(--surface-container-lowest);
   border: 1px solid var(--outline-variant);
   border-radius: var(--radius-xl);
-  overflow: hidden;
+  padding: 24px;
+  overflow-x: auto; /* Ensures standard HTML data tables stay fluid */
 }
 
-/* Form Styling */
+/* Form Styling & Matrix Selectors */
 .form-label {
   display: block;
   font-size: 12px;
@@ -165,102 +175,70 @@
   margin-bottom: 8px;
 }
 
-.form-label-xs {
-  display: block;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--on-surface-variant);
-  margin-bottom: 4px;
-}
-
-.form-input {
+.form-input, 
+.form-select,
+table input[type="text"],
+table input[type="number"],
+table select {
   width: 100%;
   background-color: var(--surface);
   border: 1px solid var(--outline-variant);
   border-radius: var(--radius-lg);
-  padding: 12px;
+  padding: 10px 12px;
   font-size: 14px;
+  color: var(--on-surface);
   outline: none;
   box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
-.form-input:focus {
+.form-input:focus,
+table input:focus,
+table select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+  background-color: var(--surface-container-lowest);
+}
+
+/* Rich Text / Markdown Structural Override */
+.text-editor-textarea {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.text-editor-textarea:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 1px var(--primary);
 }
 
-.form-select {
-  width: 100%;
-  background-color: var(--surface);
-  border: 1px solid var(--outline-variant);
-  border-radius: var(--radius-lg);
-  padding: 12px;
-  font-size: 14px;
-  outline: none;
-  appearance: none;
-  box-sizing: border-box;
-}
-
-/* Rich Text Editor Module */
-.text-editor-container {
-  border: 1px solid var(--outline-variant);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-
-.text-editor-toolbar {
-  background-color: var(--surface-container-low);
-  padding: 8px;
-  display: flex;
-  gap: 12px;
-  border-bottom: 1px solid var(--outline-variant);
-}
-
-.text-editor-btn {
-  padding: 4px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-}
-
-.text-editor-btn:hover {
-  background-color: var(--outline-variant);
-}
-
-.text-editor-textarea {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  resize: vertical;
-  box-sizing: border-box;
-}
-
-/* Media Gallery Drop Zone */
+/* Media Gallery Drop Zone layout variables */
 .media-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 16px;
 }
 
 .drag-upload-zone {
-  grid-column: span 2;
-  grid-row: span 2;
   border: 2px dashed var(--outline-variant);
   border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  padding: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-sizing: border-box;
+  background-color: var(--surface);
 }
 
 .drag-upload-zone:hover {
@@ -268,39 +246,34 @@
   background-color: rgba(103, 80, 164, 0.05);
 }
 
-/* Buttons */
-.btn-icon-interactive {
-  position: relative;
-  background: transparent;
-  border: none;
+/* Matrix Layout Table Configurations */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  margin-top: 8px;
+}
+
+th {
+  font-weight: 600;
+  padding: 12px 8px;
+  border-bottom: 2px solid var(--outline-variant);
   color: var(--on-surface-variant);
-  cursor: pointer;
-  transition: color 0.2s ease;
+  font-size: 13px;
 }
 
-.btn-icon-interactive:hover {
-  color: var(--primary);
+td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--outline-variant);
+  vertical-align: middle;
 }
 
-.btn-outline-primary {
-  padding: 12px 24px;
-  border-radius: var(--radius-lg);
-  font-size: 14px;
-  color: var(--primary);
-  background: transparent;
-  border: 1px solid var(--primary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-outline-primary:hover {
-  background-color: rgba(103, 80, 164, 0.08);
-}
-
+/* Buttons */
 .btn-filled-primary {
   padding: 12px 32px;
   border-radius: var(--radius-lg);
   font-size: 14px;
+  font-weight: 500;
   background-color: var(--primary);
   color: white;
   border: none;
@@ -311,97 +284,11 @@
 
 .btn-filled-primary:hover {
   filter: brightness(1.1);
+  box-shadow: 0 4px 8px rgba(103, 80, 164, 0.2);
 }
-
 
 /* --- Appended Refactored Custom Classes --- */
-
-/* Icon Animations & Transformations */
-.icon-toggle-rotate {
-  transition: transform 0.3s ease-in-out;
-  display: inline-block;
-}
-
-.rotate-icon {
-  transform: rotate(180deg);
-}
-
-/* Smooth Dynamic Heights Content Drawer */
-.section-collapse-content {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease-out;
-}
-
-.section-collapse-content.section-open {
-  max-height: var(--scroll-height, 1000px);
-}
-
-/* Material Design Icon Font-Sizes */
-.editor-icon-size {
-  font-size: 20px;
-}
-
-.upload-icon-size {
-  font-size: 48px;
-}
-
-.add-attribute-icon-size {
-  font-size: 18px;
-}
-
-.status-visibility-icon-size {
-  font-size: 20px;
-}
-
-.tag-close-icon-size {
-  font-size: 14px;
-}
-
-/* Drag State Modifier */
 .bg-dragging {
   background-color: rgba(103, 80, 164, 0.08) !important;
   border-color: var(--primary) !important;
-}
-
-
-/* SEO Palette Values */
-.seo-meta-title {
-  color: #1a0dab;
-}
-
-.seo-meta-url {
-  color: #006621;
-}
-
-/* User Profile Avatar Frame */
-.profile-avatar-container {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: var(--primary-container);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.profile-avatar-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Fallback UI if Image link breaks */
-.profile-avatar-fallback {
-  display: flex; /* Allow layout to be driven conditionally by React instead of hard-hiding it */
-  font-weight: bold;
-  font-size: 12px;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-}
+} 
