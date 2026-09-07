@@ -1,11 +1,11 @@
 import prisma from "../config/client.js";
 
 export const createOrder = async (
-    userId
+    userId,
+    orderData = {}
 ) => {
     return prisma.$transaction(
         async (tx) => {
-
             const cart =
                 await tx.cart.findFirst({
                     where: {
@@ -30,87 +30,61 @@ export const createOrder = async (
                 !cart ||
                 cart.items.length === 0
             ) {
-                throw new Error(
-                    "Cart is empty"
-                );
+                const error = new Error("Cart is empty");
+                error.statusCode = 400;
+                throw error;
             }
 
             let totalAmount = 0;
 
             for (const item of cart.items) {
-
-                if (
-                    !item.variant.inventory
-                ) {
-                    throw new Error(
-                        `Inventory missing for ${item.variant.sku}`
-                    );
-                }
-
-                if (
-                    item.quantity >
-                    item.variant.inventory.quantity
-                ) {
-                    throw new Error(
-                        `Insufficient stock for ${item.variant.sku}`
-                    );
-                }
-
                 totalAmount +=
-                    Number(
-                        item.variant.price
-                    ) * item.quantity;
+                    Number(item.variant.price) * item.quantity;
             }
 
+            // Create Order record
             const order =
                 await tx.order.create({
                     data: {
-                        userId:
-                            BigInt(userId),
-
+                        userId: BigInt(userId),
+                        address_id: orderData.addressId ? BigInt(orderData.addressId) : null,
+                        delivery_contact: orderData.deliveryContact || null,
+                        payment_status: orderData.paymentStatus || "PENDING",
+                        payment_reference: orderData.paymentReference || null,
                         totalAmount,
+                        status: "PENDING",
                     },
                 });
 
+            // Atomically decrement stock and create order items
             for (const item of cart.items) {
+                const rowsUpdated = await tx.$executeRaw`
+                    UPDATE inventory 
+                    SET quantity = quantity - ${item.quantity} 
+                    WHERE variant_id = ${item.variant.id} AND quantity >= ${item.quantity};
+                `;
+
+                if (rowsUpdated === 0) {
+                    const error = new Error(
+                        `Insufficient stock for ${item.variant.sku || item.variant.product?.name || "variant"}`
+                    );
+                    error.statusCode = 409;
+                    throw error;
+                }
 
                 await tx.orderItem.create({
                     data: {
                         orderId: order.id,
-
-                        variantId:
-                            item.variant.id,
-
-                        sku:
-                            item.variant.sku,
-
-                        productName:
-                            item.variant.product
-                                .name,
-
-                        quantity:
-                            item.quantity,
-
-                        price:
-                            item.variant.price,
-                    },
-                });
-
-                await tx.inventory.update({
-                    where: {
-                        variant_id:
-                            item.variant.id,
-                    },
-
-                    data: {
-                        quantity: {
-                            decrement:
-                                item.quantity,
-                        },
+                        variantId: item.variant.id,
+                        sku: item.variant.sku,
+                        productName: item.variant.product.name,
+                        quantity: item.quantity,
+                        price: item.variant.price,
                     },
                 });
             }
 
+            // Clear Cart
             await tx.cartItem.deleteMany({
                 where: {
                     cartId: cart.id,
