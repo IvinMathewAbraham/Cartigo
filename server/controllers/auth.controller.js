@@ -39,9 +39,9 @@ export const register = async (req, res) => {
         }
 
         const customerRole =
-            await prisma.role.findUnique({
+            await prisma.role.findFirst({
                 where: {
-                    name: "customer",
+                    name: { in: ["CUSTOMER", "customer"] },
                 },
             });
 

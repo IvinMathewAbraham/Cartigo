@@ -5,5 +5,5 @@ export const getImageUrl = (url) => {
 
   return url.startsWith("http")
     ? url
-    : `${API_URL}${url}`;
+    : `${API_URL || ""}${url.startsWith("/") ? url : `/${url}`}`;
 };

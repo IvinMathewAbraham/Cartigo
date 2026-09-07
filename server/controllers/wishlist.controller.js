@@ -55,6 +55,7 @@ export const removeWishlistItemController = async (req, res) => {
         req.params;
 
       await removeWishlistItem(
+        req.user.id,
         itemId
       );
 
@@ -64,7 +65,7 @@ export const removeWishlistItemController = async (req, res) => {
           "Item removed from wishlist",
       });
     } catch (error) {
-      return res.status(500).json({
+      return res.status(error.message.includes("unauthorized") ? 403 : 400).json({
         success: false,
         message: error.message,
       });

@@ -133,13 +133,17 @@ export const getCart = async (
 };
 
 export const updateCartItem = async (
+  userId,
   itemId,
   quantity
 ) => {
   const cartItem =
-    await prisma.cartItem.findUnique({
+    await prisma.cartItem.findFirst({
       where: {
         id: BigInt(itemId),
+        cart: {
+          userId: BigInt(userId),
+        },
       },
 
       include: {
@@ -153,7 +157,7 @@ export const updateCartItem = async (
 
   if (!cartItem) {
     throw new Error(
-      "Cart item not found"
+      "Cart item not found or unauthorized"
     );
   }
 
@@ -177,7 +181,7 @@ export const updateCartItem = async (
 
   return prisma.cartItem.update({
     where: {
-      id: BigInt(itemId),
+      id: cartItem.id,
     },
 
     data: {
@@ -186,23 +190,26 @@ export const updateCartItem = async (
   });
 };
 
-export const removeCartItem = async (itemId) => {
-    const item =
-      await prisma.cartItem.findUnique({
-        where: {
-          id: BigInt(itemId),
-        },
-      });
-
-    if (!item) {
-      throw new Error(
-        "Cart item not found"
-      );
-    }
-
-    return prisma.cartItem.delete({
+export const removeCartItem = async (userId, itemId) => {
+  const item =
+    await prisma.cartItem.findFirst({
       where: {
         id: BigInt(itemId),
+        cart: {
+          userId: BigInt(userId),
+        },
       },
     });
-  };
+
+  if (!item) {
+    throw new Error(
+      "Cart item not found or unauthorized"
+    );
+  }
+
+  return prisma.cartItem.delete({
+    where: {
+      id: item.id,
+    },
+  });
+};

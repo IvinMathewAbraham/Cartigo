@@ -31,6 +31,7 @@ export default function ProductManagement() {
 
   // Global pool of images uploaded to this base product
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   /* Dynamic Architecture for Variants */
   const [variants, setVariants] = useState([
@@ -116,7 +117,9 @@ export default function ProductManagement() {
   // Image File Upload Drag/Drop Logic
   const processFiles = (files) => {
     if (files && files.length > 0) {
-      const newPreviews = Array.from(files).map(file => URL.createObjectURL(file));
+      const fileArray = Array.from(files);
+      const newPreviews = fileArray.map(file => URL.createObjectURL(file));
+      setUploadedFiles(prev => [...prev, ...fileArray]);
       setUploadedImages(prev => [...prev, ...newPreviews]);
     }
   };
@@ -145,16 +148,19 @@ export default function ProductManagement() {
       const newProduct = await createProduct(basePayload);
       const createdProductId = newProduct?.id || 999; 
 
-      if (uploadedImages.length > 0) {
-        await Promise.all(uploadedImages.map(imgUrl => 
-          createProductImage(createdProductId, imgUrl)
-        ));
+      if (uploadedFiles.length > 0) {
+        await Promise.all(uploadedFiles.map(file => {
+          const formData = new FormData();
+          formData.append("image", file);
+          return createProductImage(createdProductId, formData);
+        }));
       }
 
       await Promise.all(variants.map(variant => {
         const variantPayload = {
           sku: variant.sku,
           price: parseFloat(variant.price) || 0,
+          stock: parseInt(variant.stockLevel, 10) || 0,
           attributeValueIds: [101, 202], 
         };
         return createVariant(createdProductId, variantPayload);
@@ -164,6 +170,7 @@ export default function ProductManagement() {
       
       // Reset Form states & route back to listing
       setProductForm({ name: "", description: "", categoryId: "", brandId: "", status: "active" });
+      setUploadedFiles([]);
       setUploadedImages([]);
       setVariants([{ id: Date.now(), sku: "", price: "", stockLevel: "", color: "Black", storage: "128GB", variantImage: "" }]);
       setView('list');

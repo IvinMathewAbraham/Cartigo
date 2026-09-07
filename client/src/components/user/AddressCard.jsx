@@ -41,7 +41,6 @@ try {
 const response =
 await getAddresses();
 
-``
   setAddresses(
     response.data || []
   );

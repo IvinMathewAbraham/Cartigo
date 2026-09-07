@@ -34,7 +34,8 @@ export default function CartPage() {
                         <h2>Shopping Cart</h2>
                         {cart.items.map((item) => {
                             const product = item.variant?.product;
-                            const image = product?.images?.[0]?.imageUrl || "https://placehold.co/200x200";
+                            const rawImage = product?.images?.[0]?.url || product?.images?.[0]?.imageUrl;
+                            const image = rawImage ? (rawImage.startsWith("http") ? rawImage : rawImage.startsWith("/") ? rawImage : `/${rawImage}`) : "https://placehold.co/200x200";
 
                             if (!product) return null;
 

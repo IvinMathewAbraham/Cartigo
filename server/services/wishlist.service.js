@@ -96,10 +96,23 @@ export const getWishlist = async (
   });
 };
 
-export const removeWishlistItem = async (itemId) => {
-    return prisma.wishlist_item.delete({
+export const removeWishlistItem = async (userId, itemId) => {
+    const item = await prisma.wishlist_item.findFirst({
       where: {
         id: BigInt(itemId),
+        wishlist: {
+          user_id: BigInt(userId),
+        },
+      },
+    });
+
+    if (!item) {
+      throw new Error("Wishlist item not found or unauthorized");
+    }
+
+    return prisma.wishlist_item.delete({
+      where: {
+        id: item.id,
       },
     });
   };

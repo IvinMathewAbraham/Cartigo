@@ -62,6 +62,7 @@ export const updateCartItemController = async (req, res) => {
 
       const item =
         await updateCartItem(
+          req.user.id,
           itemId,
           Number(quantity)
         );
@@ -71,7 +72,7 @@ export const updateCartItemController = async (req, res) => {
         data: item,
       });
     } catch (error) {
-      return res.status(500).json({
+      return res.status(error.message.includes("unauthorized") ? 403 : 400).json({
         success: false,
         message: error.message,
       });
@@ -85,6 +86,7 @@ export const removeCartItemController = async (req, res) => {
         req.params;
 
       await removeCartItem(
+        req.user.id,
         itemId
       );
 
@@ -94,7 +96,7 @@ export const removeCartItemController = async (req, res) => {
           "Item removed from cart",
       });
     } catch (error) {
-      return res.status(500).json({
+      return res.status(error.message.includes("unauthorized") ? 403 : 400).json({
         success: false,
         message: error.message,
       });

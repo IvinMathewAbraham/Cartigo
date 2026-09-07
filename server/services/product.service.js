@@ -239,39 +239,49 @@ export const createVariant = async (
   productId,
   data
 ) => {
-  const variant =
-    await prisma.productVariant.create({
-      data: {
-        product: {
-          connect: {
-            id: BigInt(productId),
+  return prisma.$transaction(async (tx) => {
+    const variant =
+      await tx.productVariant.create({
+        data: {
+          product: {
+            connect: {
+              id: BigInt(productId),
+            },
           },
+
+          sku: data.sku,
+
+          price: data.price,
+
+          is_active: true,
         },
+      });
 
-        sku: data.sku,
+    if (
+      data.attributeValueIds?.length
+    ) {
+      await tx.variantAttributeValue.createMany({
+        data:
+          data.attributeValueIds.map(
+            (attributeValueId) => ({
+              variantId: variant.id,
+              attributeValueId:
+                BigInt(attributeValueId),
+            })
+          ),
+      });
+    }
 
-        price: data.price,
-
-        is_active: true,
+    const initialStock = Number(data.stock ?? data.stockLevel ?? data.quantity ?? 0);
+    await tx.inventory.create({
+      data: {
+        variant_id: variant.id,
+        quantity: initialStock,
       },
     });
 
-  if (
-    data.attributeValueIds?.length
-  ) {
-    await prisma.variantAttributeValue.createMany({
-      data:
-        data.attributeValueIds.map(
-          (attributeValueId) => ({
-            variantId: variant.id,
-            attributeValueId:
-              BigInt(attributeValueId),
-          })
-        ),
-    });
-  }
-
-  return variant;
+    return variant;
+  });
 };
 
 

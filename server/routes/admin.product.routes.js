@@ -11,7 +11,7 @@ const router = express.Router();
 router.post("/",protect,authorize("ADMIN"), createProductController);
 router.put("/:id",protect,authorize("ADMIN"), updateProductController);
 router.patch("/:id/deactivate",protect,authorize("ADMIN"),deactivateProductController);
-router.post("/:id/images", protect,  upload.single("image"),  uploadProductImage);
+router.post("/:id/images", protect, authorize("ADMIN"), upload.single("image"), uploadProductImage);
 router.patch("/images/:imageId/primary",protect,authorize("ADMIN"),setPrimaryProductImage);
 router.post("/attributes",protect,authorize("ADMIN"),createAttributeController);
 router.post("/attribute-values",protect,authorize("ADMIN"),createAttributeValueController);
