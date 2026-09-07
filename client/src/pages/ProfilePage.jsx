@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import ProfileSidebar from "../components/user/ProfileSidebar";
 import PersonalInfoCard from "../components/user/PersonalInfoCard";
@@ -10,8 +11,14 @@ import Header from "../components/layout/Header/Header";
 import "./ProfilePage.css";
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] =
-    useState("profile");
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(location.state?.tab || "profile");
+
+  useEffect(() => {
+    if (location.state?.tab) {
+      setActiveTab(location.state.tab);
+    }
+  }, [location.state]);
 
   const renderContent = () => {
     switch (activeTab) {

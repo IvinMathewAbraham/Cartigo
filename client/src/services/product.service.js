@@ -6,11 +6,23 @@ export const getProducts = async ({
   page = 1,
   limit = 12,
   search = "",
+  categoryId = "",
+  brandId = "",
+  minPrice = "",
+  maxPrice = "",
+  sortBy = "newest",
 } = {}) => {
-  const response = await api.get(
-    `/products?page=${page}&limit=${limit}&search=${search}`
-  );
+  const params = new URLSearchParams();
+  if (page) params.append("page", page);
+  if (limit) params.append("limit", limit);
+  if (search) params.append("search", search);
+  if (categoryId) params.append("categoryId", categoryId);
+  if (brandId) params.append("brandId", brandId);
+  if (minPrice) params.append("minPrice", minPrice);
+  if (maxPrice) params.append("maxPrice", maxPrice);
+  if (sortBy) params.append("sortBy", sortBy);
 
+  const response = await api.get(`/products?${params.toString()}`);
   return response.data;
 };
 

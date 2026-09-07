@@ -77,8 +77,12 @@ export function CartProvider({ children }) {
     }
 };
 
+    const clearCart = () => {
+        setCart(prev => prev ? { ...prev, items: [] } : null);
+    };
+
     return (
-        <CartContext.Provider value={{ cart, loading, handleUpdateQty, handleRemove, cartTotal, handleAddToCart,     refreshCart: loadCart }}>
+        <CartContext.Provider value={{ cart, loading, handleUpdateQty, handleRemove, cartTotal, handleAddToCart, refreshCart: loadCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );

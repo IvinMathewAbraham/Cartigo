@@ -89,11 +89,21 @@ export const getAllProducts = async (req, res) => {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 12;
     const search = req.query.search || "";
+    const categoryId = req.query.categoryId || null;
+    const brandId = req.query.brandId || null;
+    const minPrice = req.query.minPrice || null;
+    const maxPrice = req.query.maxPrice || null;
+    const sortBy = req.query.sortBy || "newest";
 
     const result = await getProducts({
       page,
       limit,
       search,
+      categoryId,
+      brandId,
+      minPrice,
+      maxPrice,
+      sortBy,
     });
 
     return res.status(200).json({

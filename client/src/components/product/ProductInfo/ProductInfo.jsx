@@ -2,19 +2,37 @@ import QuantitySelector from "../QuantitySelector/QuantitySelector";
 import "./ProductInfo.css";
 
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../../context/CartContext";
 
 export default function ProductInfo({ product }) {
   const { handleAddToCart } = useCart();
-
-  const [quantity, setQuantity] = useState(1);  
+  const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
+  const navigate = useNavigate();
 
   const addCart = async () => {
-    console.log(product );
-    console.log(product.variant.id);
-    await handleAddToCart(product.variant.id, quantity);
-};
+    if (!product?.variant?.id) return;
+    setIsAdding(true);
+    try {
+      await handleAddToCart(product.variant.id, quantity);
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
+  const handleBuyNow = async () => {
+    if (!product?.variant?.id) return;
+    setIsAdding(true);
+    try {
+      const success = await handleAddToCart(product.variant.id, quantity);
+      if (success !== false) {
+        navigate("/cart");
+      }
+    } finally {
+      setIsAdding(false);
+    }
+  };
 
   return (
     <div className="product-info">
@@ -53,12 +71,12 @@ export default function ProductInfo({ product }) {
     setQuantity={setQuantity}/>
 
       <div className="action-buttons">
-        <button className="cart-btn" onClick={addCart}>
-          Add To Cart
+        <button className="cart-btn" onClick={addCart} disabled={isAdding}>
+          {isAdding ? "Adding..." : "Add To Cart"}
         </button>
 
-        <button className="buy-btn">
-          Buy Now
+        <button className="buy-btn" onClick={handleBuyNow} disabled={isAdding}>
+          {isAdding ? "Processing..." : "Buy Now"}
         </button>
       </div>
     </div>
