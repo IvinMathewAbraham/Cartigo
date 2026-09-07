@@ -1,3 +1,5 @@
+-- DEPRECATED: This legacy schema is superseded by Prisma schema management (`prisma/schema.prisma`).
+-- Please use `npx prisma migrate dev` / `npm run db:setup` for schema migrations.
 -- Phase 1 Shopping Cart System Schema
 -- MySQL 8.x / InnoDB
 

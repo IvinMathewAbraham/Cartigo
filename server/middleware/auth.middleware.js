@@ -1,14 +1,17 @@
 import jwt from "jsonwebtoken";
 import prisma from "../config/client.js";
 
-export const protect = async (req,res,next) => {
+export const protect = async (req, res, next) => {
   try {
-    const token = req.cookies.token;
-    
+    let token = req.cookies?.token;
+
+    if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1];
+    }
 
     if (!token) {
       return res.status(401).json({
-       success: false,
+        success: false,
         message: "Authentication required",
       });
     }
@@ -18,23 +21,18 @@ export const protect = async (req,res,next) => {
       process.env.JWT_SECRET
     );
 
-    // console.log(decoded);
-
-    const user =
-      await prisma.user.findUnique({
-        where: {
-          id: BigInt(
-            decoded.userId
-          ),
-        },
-        include: {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: BigInt(decoded.userId),
+      },
+      include: {
         user_role: {
           include: {
-            role: true
-          }
-        }
-      }
-      });
+            role: true,
+          },
+        },
+      },
+    });
 
     if (!user) {
       return res.status(401).json({
@@ -44,18 +42,16 @@ export const protect = async (req,res,next) => {
     }
 
     req.user = user;
-
     next();
   } catch (error) {
-    console.error(error);
+    console.error("Authentication error:", error);
 
     return res.status(401).json({
       success: false,
-      message: "Invalid token",
-      error: error.message,
+      message: "Invalid or expired token",
     });
   }
-}
+};
 
 
 export const authorize = (...roles) => {
