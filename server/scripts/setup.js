@@ -1,3 +1,8 @@
+/**
+ * @deprecated This legacy setup script has been deprecated in favor of Prisma migrations.
+ * Use `npm run db:setup` / `npx prisma migrate dev` and `npm run db:seed` instead.
+ */
+
 import {
   getAdminConnection,
   getDbConnection,

@@ -11,17 +11,23 @@ import {
 import {
   protect,
 } from "../middleware/auth.middleware.js";
+import { validate } from "../middleware/validate.middleware.js";
+import {
+  registerValidator,
+  loginValidator,
+  updateProfileValidator,
+} from "../validators/auth.validator.js";
 
 const router = express.Router();
 
-router.post("/register",register);
+router.post("/register", registerValidator, validate, register);
 
-router.post("/login", login);
+router.post("/login", loginValidator, validate, login);
 
-router.post("/logout",logout);
+router.post("/logout", logout);
 
-router.get( "/me",protect, me);
+router.get("/me", protect, me);
 
-router.put("/profile", protect,updateProfile);
+router.put("/profile", protect, updateProfileValidator, validate, updateProfile);
 
 export default router;
