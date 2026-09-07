@@ -5,17 +5,18 @@ import { createOrder, getOrders, getOrderById, updateOrderStatus, getAllOrders, 
 //POST /api/orders
 export const createOrderController = async (req, res) => {
   try {
-    const order =
-      await createOrder(
-        req.user.id
-      );
+    const order = await createOrder(
+      req.user.id,
+      req.body
+    );
 
     return res.status(201).json({
       success: true,
       data: order,
     });
   } catch (error) {
-    return res.status(500).json({
+    const status = error.statusCode || (error.message.includes("Cart is empty") ? 400 : 500);
+    return res.status(status).json({
       success: false,
       message: error.message,
     });

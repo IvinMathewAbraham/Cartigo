@@ -87,13 +87,20 @@ export const register = async (req, res) => {
         });
 
         return res.status(201).json({
-            message:
-                "User registered successfully",
+            success: true,
+            message: "User registered successfully",
+            data: {
+                id: user.id.toString(),
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            },
         });
     } catch (error) {
         console.error(error);
 
         res.status(500).json({
+            success: false,
             message: "Server error",
         });
     }
@@ -116,12 +123,13 @@ export const login = async (
 
         if (!user) {
             return res.status(401).json({
-                message:
-                    "Invalid credentials",
+                success: false,
+                message: "Invalid credentials",
             });
         }
         if (!user.is_active) {
             return res.status(403).json({
+                success: false,
                 message: "Account disabled",
             });
         }
@@ -134,8 +142,8 @@ export const login = async (
 
         if (!isMatch) {
             return res.status(401).json({
-                message:
-                    "Invalid credentials",
+                success: false,
+                message: "Invalid credentials",
             });
         }
 
@@ -155,9 +163,10 @@ export const login = async (
         });
 
         return res.json({
+            success: true,
             message: "Login successful",
             user: {
-                id: user.id,
+                id: user.id.toString(),
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
@@ -167,6 +176,7 @@ export const login = async (
         console.error(error);
 
         res.status(500).json({
+            success: false,
             message: "Server error",
         });
     }
@@ -180,6 +190,7 @@ export const logout = (
     res.clearCookie("token");
 
     res.json({
+        success: true,
         message: "Logged out",
     });
 };
