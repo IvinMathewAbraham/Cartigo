@@ -131,7 +131,19 @@ export const getOrders = async (
         },
 
         include: {
-            items: true,
+            items: {
+                include: {
+                    variant: {
+                        include: {
+                            product: {
+                                include: {
+                                    images: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
         },
 
         orderBy: {

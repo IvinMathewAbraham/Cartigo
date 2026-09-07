@@ -46,6 +46,11 @@ export const getProducts = async ({
   page = 1,
   limit = 12,
   search = "",
+  categoryId = null,
+  brandId = null,
+  minPrice = null,
+  maxPrice = null,
+  sortBy = "newest",
 }) => {
   const skip = (page - 1) * limit;
 
@@ -53,10 +58,48 @@ export const getProducts = async ({
     is_active: true,
   };
 
-  if (search.trim()) {
+  if (search && search.trim()) {
     where.name = {
       contains: search.trim(),
     };
+  }
+
+  if (brandId) {
+    where.brand_id = BigInt(brandId);
+  }
+
+  if (categoryId) {
+    where.OR = [
+      { primary_category_id: BigInt(categoryId) },
+      { product_category: { some: { category_id: BigInt(categoryId) } } },
+    ];
+  }
+
+  const priceFilter = {};
+  if (minPrice !== null && minPrice !== undefined && minPrice !== "") {
+    priceFilter.gte = Number(minPrice);
+  }
+  if (maxPrice !== null && maxPrice !== undefined && maxPrice !== "") {
+    priceFilter.lte = Number(maxPrice);
+  }
+  if (Object.keys(priceFilter).length > 0) {
+    where.variants = {
+      some: {
+        is_active: true,
+        price: priceFilter,
+      },
+    };
+  }
+
+  let orderBy = { createdAt: "desc" };
+  if (sortBy === "name_asc") {
+    orderBy = { name: "asc" };
+  } else if (sortBy === "name_desc") {
+    orderBy = { name: "desc" };
+  } else if (sortBy === "oldest") {
+    orderBy = { createdAt: "asc" };
+  } else {
+    orderBy = { createdAt: "desc" };
   }
 
   const [products, total] = await Promise.all([
@@ -89,9 +132,7 @@ export const getProducts = async ({
       skip,
       take: limit,
 
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy,
     }),
 
     prisma.product.count({

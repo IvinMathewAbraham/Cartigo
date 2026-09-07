@@ -4,18 +4,23 @@ export default function ProductToolbar({
   start,
   end,
   total,
+  sortBy = "newest",
+  onChangeSortBy,
 }) {
   return (
     <div className="product-toolbar">
       <div>
-        Showing {start}-{end} of {total} results
+        Showing {total === 0 ? 0 : start}-{end} of {total} results
       </div>
 
-      <select>
-        <option>Featured</option>
-        <option>Price Low to High</option>
-        <option>Price High to Low</option>
-        <option>Newest</option>
+      <select
+        value={sortBy}
+        onChange={(e) => onChangeSortBy && onChangeSortBy(e.target.value)}
+      >
+        <option value="newest">Newest</option>
+        <option value="name_asc">Name: A to Z</option>
+        <option value="name_desc">Name: Z to A</option>
+        <option value="oldest">Oldest</option>
       </select>
     </div>
   );

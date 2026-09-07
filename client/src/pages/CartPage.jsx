@@ -1,10 +1,45 @@
-import { useCart } from "../context/CartContext.jsx"; // Replaced local API hooks with Global Context Hook
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext.jsx";
+import { createOrder } from "../api/order";
+import { getAddresses } from "../api/address";
 import "./CartPage.css";
 import Header from "../components/layout/Header/Header";
 
 export default function CartPage() {
-    // Everything is pulled clean from global context state
-    const { cart, loading, handleUpdateQty, handleRemove, cartTotal } = useCart();
+    const { cart, loading, handleUpdateQty, handleRemove, cartTotal, clearCart, refreshCart } = useCart();
+    const [checkingOut, setCheckingOut] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
+
+    const handleCheckout = async () => {
+        try {
+            setCheckingOut(true);
+            setErrorMessage("");
+
+            // Check if user has an address configured
+            const addressResponse = await getAddresses();
+            const addresses = addressResponse?.data || addressResponse || [];
+
+            if (addresses.length === 0) {
+                alert("Please add a shipping address in your profile before checking out.");
+                navigate("/profile", { state: { tab: "addresses" } });
+                return;
+            }
+
+            // Create order
+            await createOrder();
+            clearCart();
+            await refreshCart();
+
+            navigate("/profile", { state: { tab: "orders" } });
+        } catch (error) {
+            console.error("Checkout failed:", error);
+            setErrorMessage(error.response?.data?.message || error.message || "Failed to complete checkout");
+        } finally {
+            setCheckingOut(false);
+        }
+    };
 
     if (loading) {
         return <div className="cart-page-loader">Loading Cart...</div>;
@@ -28,6 +63,11 @@ export default function CartPage() {
         <>
             <Header />
             <div className="cart-page">
+                {errorMessage && (
+                    <div style={{ padding: "12px", background: "#fee2e2", color: "#b91c1c", borderRadius: "8px", marginBottom: "16px" }}>
+                        {errorMessage}
+                    </div>
+                )}
                 <div className="cart-layout">
                     {/* Cart Items List */}
                     <div className="cart-items">
@@ -84,7 +124,13 @@ export default function CartPage() {
                             <span>Total</span>
                             <span>₹{cartTotal.toFixed(2)}</span>
                         </div>
-                        <button className="checkout-btn">Proceed To Checkout</button>
+                        <button 
+                            className="checkout-btn" 
+                            onClick={handleCheckout}
+                            disabled={checkingOut}
+                        >
+                            {checkingOut ? "Processing..." : "Proceed To Checkout"}
+                        </button>
                     </div>
                 </div>
             </div>
