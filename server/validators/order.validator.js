@@ -12,6 +12,26 @@ export const getOrderByIdValidator = [
     }),
 ];
 
+export const checkoutValidator = [
+  body("addressId")
+    .notEmpty()
+    .withMessage("Shipping address is required")
+    .custom((value) => {
+      if (isNaN(Number(value)) || Number(value) <= 0) {
+        throw new Error("Shipping address must be a valid positive integer");
+      }
+      return true;
+    }),
+  body("paymentProvider")
+    .optional()
+    .isIn(["MOCK"])
+    .withMessage("Unsupported payment provider"),
+  body("paymentDetails")
+    .optional()
+    .isObject()
+    .withMessage("Payment details must be an object"),
+];
+
 export const updateOrderStatusValidator = [
   param("id")
     .notEmpty()

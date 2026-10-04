@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
-import { createOrder } from "../api/order";
+import { checkout, getShippingMethods } from "../api/order";
 import { getAddresses } from "../api/address";
 import "./CartPage.css";
 import Header from "../components/layout/Header/Header";
@@ -10,25 +10,45 @@ export default function CartPage() {
     const { cart, loading, handleUpdateQty, handleRemove, cartTotal, clearCart, refreshCart } = useCart();
     const [checkingOut, setCheckingOut] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [addresses, setAddresses] = useState([]);
+    const [addressId, setAddressId] = useState("");
+    const [paymentOutcome, setPaymentOutcome] = useState("success");
+    const [shippingMethods, setShippingMethods] = useState([]);
+    const [shippingMethod, setShippingMethod] = useState("STANDARD");
     const navigate = useNavigate();
+    const selectedShipping = shippingMethods.find((method) => method.code === shippingMethod);
+    const shippingFee = selectedShipping?.fee || 0;
+
+    useEffect(() => {
+        loadAddresses();
+        getShippingMethods()
+            .then((response) => setShippingMethods(response?.data || []))
+            .catch(() => setErrorMessage("Unable to load shipping methods."));
+    }, []);
 
     const handleCheckout = async () => {
         try {
             setCheckingOut(true);
             setErrorMessage("");
 
-            // Check if user has an address configured
-            const addressResponse = await getAddresses();
-            const addresses = addressResponse?.data || addressResponse || [];
+            if (!addressId) {
+                setErrorMessage("Select a shipping address before checking out.");
+                return;
+            }
 
             if (addresses.length === 0) {
-                alert("Please add a shipping address in your profile before checking out.");
                 navigate("/profile", { state: { tab: "addresses" } });
                 return;
             }
 
-            // Create order
-            await createOrder();
+            await checkout({
+                addressId,
+                paymentProvider: "MOCK",
+                shippingMethod,
+                paymentDetails: {
+                    outcome: paymentOutcome,
+                },
+            });
             clearCart();
             await refreshCart();
 
@@ -38,6 +58,17 @@ export default function CartPage() {
             setErrorMessage(error.response?.data?.message || error.message || "Failed to complete checkout");
         } finally {
             setCheckingOut(false);
+        }
+    };
+
+    const loadAddresses = async () => {
+        try {
+            const addressResponse = await getAddresses();
+            const availableAddresses = addressResponse?.data || addressResponse || [];
+            setAddresses(availableAddresses);
+            setAddressId(String(availableAddresses.find((address) => address.isDefault)?.id || availableAddresses[0]?.id || ""));
+        } catch (error) {
+            setErrorMessage(error.response?.data?.message || "Unable to load shipping addresses.");
         }
     };
 
@@ -111,25 +142,56 @@ export default function CartPage() {
                     {/* Sticky Order Summary Card */}
                     <div className="cart-summary">
                         <h3>Order Summary</h3>
+                        <label className="checkout-field">
+                            Delivery method
+                            <select value={shippingMethod} onChange={(event) => setShippingMethod(event.target.value)}>
+                                {shippingMethods.map((method) => (
+                                    <option key={method.code} value={method.code}>
+                                        {method.name} - {method.fee === 0 ? "Free" : `₹${method.fee.toFixed(2)}`} ({method.estimatedDelivery.from} to {method.estimatedDelivery.to})
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                        <label className="checkout-field">
+                            Shipping address
+                            <select value={addressId} onChange={(event) => setAddressId(event.target.value)}>
+                                <option value="">Select an address</option>
+                                {addresses.map((address) => (
+                                    <option key={address.id} value={address.id}>
+                                        {address.label || address.addressLine1}, {address.city}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+                        <label className="checkout-field">
+                            Mock payment result
+                            <select value={paymentOutcome} onChange={(event) => setPaymentOutcome(event.target.value)}>
+                                <option value="success">Approve payment</option>
+                                <option value="failure">Simulate payment failure</option>
+                            </select>
+                        </label>
+                        <p className="checkout-note">
+                            Test mode only. No card details or external payment provider are used.
+                        </p>
                         <div className="summary-row">
                             <span>Subtotal</span>
                             <span>₹{cartTotal.toFixed(2)}</span>
                         </div>
                         <div className="summary-row">
                             <span>Shipping</span>
-                            <span>Free</span>
+                            <span>{shippingFee === 0 ? "Free" : `₹${shippingFee.toFixed(2)}`}</span>
                         </div>
                         <hr className="summary-divider" />
                         <div className="summary-row total">
                             <span>Total</span>
-                            <span>₹{cartTotal.toFixed(2)}</span>
+                            <span>₹{(cartTotal + shippingFee).toFixed(2)}</span>
                         </div>
                         <button 
                             className="checkout-btn" 
                             onClick={handleCheckout}
                             disabled={checkingOut}
                         >
-                            {checkingOut ? "Processing..." : "Proceed To Checkout"}
+                            {checkingOut ? "Processing..." : "Pay and Place Order"}
                         </button>
                     </div>
                 </div>

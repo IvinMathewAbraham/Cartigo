@@ -1,8 +1,11 @@
 import prisma from "../config/client.js";
+import { authorizePayment, PAYMENT_PROVIDERS } from "./payment.service.js";
+import { getShippingMethod } from "./shipping.service.js";
 
 export const createOrder = async (
     userId,
-    orderData = {}
+    orderData = {},
+    options = {}
 ) => {
     return prisma.$transaction(
         async (tx) => {
@@ -42,6 +45,30 @@ export const createOrder = async (
                     Number(item.variant.price) * item.quantity;
             }
 
+            const shipping = getShippingMethod(orderData.shippingMethod);
+            totalAmount += shipping.fee;
+
+            if (options.requireAddress) {
+                const address = await tx.address.findFirst({
+                    where: {
+                        id: BigInt(orderData.addressId),
+                        userId: BigInt(userId),
+                    },
+                });
+
+                if (!address) {
+                    const error = new Error("Shipping address not found");
+                    error.statusCode = 400;
+                    throw error;
+                }
+            }
+
+            const payment = await authorizePayment({
+                provider: orderData.paymentProvider || PAYMENT_PROVIDERS.MOCK,
+                amount: totalAmount,
+                paymentDetails: orderData.paymentDetails,
+            });
+
             // Create Order record
             const order =
                 await tx.order.create({
@@ -49,8 +76,8 @@ export const createOrder = async (
                         userId: BigInt(userId),
                         address_id: orderData.addressId ? BigInt(orderData.addressId) : null,
                         delivery_contact: orderData.deliveryContact || null,
-                        payment_status: orderData.paymentStatus || "PENDING",
-                        payment_reference: orderData.paymentReference || null,
+                        payment_status: payment.status,
+                        payment_reference: payment.reference,
                         totalAmount,
                         status: "PENDING",
                     },
@@ -130,7 +157,7 @@ export const getOrderById = async (
     orderId,
     userId
 ) => {
-    return prisma.order.findFirst({
+    const order = await prisma.order.findFirst({
         where: {
             id: BigInt(orderId),
             userId: BigInt(userId),
@@ -148,7 +175,14 @@ export const getOrderById = async (
             },
         },
     });
+    return order ? { ...order, shipping: getShippingMethod(), tracking: getTracking(order) } : null;
 };
+
+const getTracking = (order) => ({
+    reference: `CARTIGO-${order.id.toString()}`,
+    status: order.status || "PENDING",
+    estimatedDelivery: getShippingMethod().estimatedDelivery,
+});
 
 export const updateOrderStatus = async (
         orderId,
