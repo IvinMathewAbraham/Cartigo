@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 async function main() {
   console.log("Seeding comprehensive e-commerce data...");
-
   // ==========================================
   // 1. ROLES & PERMISSIONS
   // ==========================================
