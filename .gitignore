@@ -6,3 +6,5 @@ logs/
 docs/
 /server/models
 *.md
+!PROJECT-STATUS.md
+!SYSTEM-DESIGN.md

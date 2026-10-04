@@ -17,9 +17,15 @@ import orderRouter from "./routes/order.routes.js";
 import adminOrderRouter  from "./routes/admin.order.routes.js"
 import categoryRouter from "./routes/category.routes.js"; 
 import brandRouter from "./routes/brand.routes.js"; 
+import returnRouter from "./routes/return.routes.js";
+import shippingRouter from "./routes/shipping.routes.js";
 
 // Load environment variables from .env file
 dotenv.config();
+
+if (process.env.NODE_ENV === "production" && (!process.env.JWT_SECRET || process.env.JWT_SECRET.includes("change_in_production"))) {
+  throw new Error("JWT_SECRET must be configured with a production-only value");
+}
 
 
 BigInt.prototype.toJSON =
@@ -72,6 +78,8 @@ app.use("/api/orders", orderRouter);
 app.use("/api/admin/orders",adminOrderRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/brands", brandRouter);
+app.use("/api/returns", returnRouter);
+app.use("/api/shipping", shippingRouter);
 
 // 404 Not Found handler
 app.use((req, res) => {
@@ -90,5 +98,3 @@ app.listen(port, () => {
 });
 
 export default app;
-
-

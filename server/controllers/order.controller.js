@@ -23,6 +23,25 @@ export const createOrderController = async (req, res) => {
   }
 };
 
+export const checkoutController = async (req, res) => {
+  try {
+    const order = await createOrder(req.user.id, req.body, {
+      requireAddress: true,
+    });
+
+    return res.status(201).json({
+      success: true,
+      data: order,
+    });
+  } catch (error) {
+    const status = error.statusCode || (error.message?.includes("Cart is empty") ? 400 : 500);
+    return res.status(status).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // GET /api/orders
 export const getOrdersController = async (req, res) => {
   try {
@@ -69,6 +88,28 @@ export const getOrderByIdController = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+export const getOrderReceiptController = async (req, res) => {
+  try {
+    const order = await getOrderById(req.params.id, req.user.id);
+    if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+    return res.status(200).json({
+      success: true,
+      data: {
+        receiptNumber: `RECEIPT-${order.id.toString()}`,
+        orderId: order.id,
+        paidAt: order.createdAt,
+        paymentReference: order.payment_reference,
+        paymentStatus: order.payment_status,
+        total: order.totalAmount,
+        items: order.items,
+        shipping: order.shipping,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 

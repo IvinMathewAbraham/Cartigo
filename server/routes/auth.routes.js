@@ -17,12 +17,13 @@ import {
   loginValidator,
   updateProfileValidator,
 } from "../validators/auth.validator.js";
+import { rateLimit } from "../middleware/rateLimit.middleware.js";
 
 const router = express.Router();
 
-router.post("/register", registerValidator, validate, register);
+router.post("/register", rateLimit({ max: 5 }), registerValidator, validate, register);
 
-router.post("/login", loginValidator, validate, login);
+router.post("/login", rateLimit({ max: 10 }), loginValidator, validate, login);
 
 router.post("/logout", logout);
 

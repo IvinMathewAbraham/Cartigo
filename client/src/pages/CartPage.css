@@ -168,6 +168,31 @@
   transition: opacity 0.2s ease;
 }
 
+.checkout-field {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.checkout-field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: #fff;
+  color: #1e293b;
+  padding: 0 10px;
+}
+
+.checkout-note {
+  color: #64748b;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
 .checkout-btn:hover {
   opacity: 0.9;
 }
