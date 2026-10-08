@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Header from '../components/layout/Header/Header.jsx';
 import CategoryBar from '../components/layout/Header/CategoryBar.jsx';
 import Footer from '../components/layout/Footer/Footer.jsx';
@@ -8,13 +9,25 @@ import DealsSection from '../components/layout/DealsSection/DealsSection.jsx';
 import PromoBannerGrid from '../components/layout/Banner/PromoBannerGrid/PromoBannerGrid.jsx';
 import Testimonials from '../components/layout/Testimonials/Testimonials.jsx';
 
-import { products } from '../assets/product.js'; // time to change this to a fetch request to the backend when we have data in the database
-
-
+import { getProducts } from '../services/product.service';
 
 import './HomePage.css';
 
 export default function HomePage() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await getProducts({ limit: 10 });
+        setProducts(response.products || []);
+      } catch (error) {
+        console.error("Failed to load products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <div className="home-page">
       <Header />
@@ -32,8 +45,6 @@ export default function HomePage() {
         <DealsSection
           title="Best Sellers"
           products={products} />
-        
-
       </main>
       <Footer />
     </div>
