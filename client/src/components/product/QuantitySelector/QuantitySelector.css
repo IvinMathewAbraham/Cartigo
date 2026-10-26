@@ -1,19 +1,50 @@
-.quantity-selector {
+/* ==========================================================================
+   CARTIGO QUANTITY SELECTOR
+   ========================================================================== */
+
+.cartigo-quantity-selector {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  width: fit-content;
+  box-shadow: var(--shadow-xs);
+}
+
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--color-surface-subtle);
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  border: 1px solid #ddd;
-  width: fit-content;
-}
-
-.quantity-selector button {
-  width: 40px;
-  height: 40px;
-  border: none;
+  justify-content: center;
   cursor: pointer;
-  background: white;
+  transition: all var(--transition-fast);
 }
 
-.quantity-selector span {
-  width: 50px;
+.qty-btn:hover:not(:disabled) {
+  background: var(--color-brand-subtle);
+  color: var(--color-brand-primary);
+}
+
+.qty-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.qty-value {
+  min-width: 44px;
   text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
 }

@@ -1,0 +1,161 @@
+/* ==========================================================================
+   CARTIGO DESIGN SYSTEM FOUNDATION TOKENS
+   Source of Truth: Color Hunt Palette (e3f2fd/90caf9/2196f3/0d47a1) & refer.jpg
+   ========================================================================== */
+
+:root {
+  /* --- Approved Brand Identity (Google Drive Source of Truth) --- */
+  --color-brand-primary: #0D47A1;      /* Deep Navy: Primary brand anchor & major buttons */
+  --color-brand-primary-hover: #1565C0;
+  --color-brand-primary-pressed: #0A3578;
+  --color-brand-interactive: #2196F3;  /* Vibrant Blue: Focus rings, active highlights & gradients */
+  --color-brand-accent: #90CAF9;       /* Sky Blue: Subtle borders, hover rings, secondary accents */
+  --color-brand-subtle: #E3F2FD;       /* Ice Tint: Active chips, badge surfaces, card highlights */
+
+  /* --- Neutral Canvas & Surfaces --- */
+  --color-canvas-app: #F8FAFC;         /* Global page canvas (Slate-50) */
+  --color-surface-card: #FFFFFF;       /* Pure white for cards, panels, modals */
+  --color-surface-subtle: #F1F5F9;     /* Slate-100 for secondary table headers & bars */
+  --color-surface-media: #F4F5F7;      /* Neutral background behind product images */
+  --color-surface-disabled: #E2E8F0;
+
+  /* --- Text & Content Hierarchy --- */
+  --color-text-primary: #0F172A;       /* Slate-900: High-contrast headings and prices */
+  --color-text-brand: #0D47A1;         /* Deep Navy: Brand emphasis and primary links */
+  --color-text-body: #334155;          /* Slate-700: High-legibility body descriptions */
+  --color-text-muted: #64748B;         /* Slate-500: Metadata, breadcrumbs, review count */
+  --color-text-disabled: #94A3B8;      /* Slate-400: Inactive states & placeholders */
+  --color-text-inverse: #FFFFFF;       /* Pure white text on dark buttons & badges */
+
+  /* --- Interactive Action Tokens --- */
+  --color-action-primary: #0D47A1;
+  --color-action-primary-hover: #1565C0;
+  --color-action-primary-pressed: #0A3578;
+  --color-action-secondary-bg: #E3F2FD;
+  --color-action-secondary-text: #0D47A1;
+  --color-action-focus: #2196F3;
+  --color-interactive-link: #0D47A1;
+  --color-interactive-link-hover: #1565C0;
+
+  /* --- Semantic State Tokens --- */
+  --color-success: #16A34A;
+  --color-success-bg: #F0FDF4;
+  --color-success-text: #15803D;
+
+  --color-warning: #D97706;
+  --color-warning-bg: #FFFBEB;
+  --color-warning-text: #B45309;
+
+  --color-danger: #DC2626;
+  --color-danger-bg: #FEF2F2;
+  --color-danger-text: #B91C1C;
+
+  --color-info: #0284C7;
+  --color-info-bg: #E3F2FD;
+  --color-info-text: #0D47A1;
+
+  --color-rating: #F59E0B;
+  --color-rating-bg: #FFFBEB;
+
+  /* --- Borders & Dividers --- */
+  --color-border-subtle: #E2E8F0;
+  --color-border-strong: #CBD5E1;
+  --color-border-brand: #90CAF9;
+  --color-overlay-scrim: rgba(15, 23, 42, 0.45);
+
+  /* --- Corner Radius Scale --- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* --- Elevation & Diffuse Shadows --- */
+  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.06);
+
+  /* --- Spacing Scale (8pt Grid) --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* --- Typography Stacks --- */
+  --font-family-base: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-numeric-tabular: tabular-nums;
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms ease-out;
+  --transition-normal: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-drawer: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Base Reset & Document Defaults
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-canvas-app);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Global Container Standard */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* Accessible Focus Ring Utility */
+:focus-visible {
+  outline: 2px solid var(--color-action-focus);
+  outline-offset: 2px;
+}
+
+/* Numeric & Tabular Pricing Standard */
+.tabular-numbers, .price, .total-amount, .qty-count {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reduced Motion Compliance */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,23 +1,43 @@
-.pagination {
-  margin-top: 40px;
+/* ==========================================================================
+   CARTIGO PAGINATION CONTROLS
+   ========================================================================== */
 
+.pagination {
+  margin: var(--space-8) 0;
   display: flex;
   justify-content: center;
-  gap: 10px;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .pagination button {
-  width: 40px;
+  min-width: 40px;
   height: 40px;
-
-  border: 1px solid #d1d5db;
-  background: white;
-
+  padding: 0 10px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface-card);
+  color: var(--color-text-body);
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
 }
 
-.pagination .active {
-  background: #0f4c97;
-  color: white;
+.pagination button:hover:not(:disabled):not(.active) {
+  border-color: var(--color-brand-primary);
+  color: var(--color-brand-primary);
+  background: var(--color-brand-subtle);
+}
+
+.pagination button.active {
+  background: var(--color-brand-primary);
+  border-color: var(--color-brand-primary);
+  color: #FFFFFF;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
