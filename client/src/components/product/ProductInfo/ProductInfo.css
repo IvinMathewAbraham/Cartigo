@@ -1,151 +1,307 @@
 /* ==========================================================================
-   Product Info Component Stylesheet
+   CARTIGO UNIFIED BUY BOX & PRODUCT INFO
    ========================================================================== */
 
-.product-info {
+.product-info-column {
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
 }
 
-.product-badge {
-  background-color: var(--color-primary-light, #e1e8fd);
-  color: var(--color-primary, #004ac6);
-  font-size: 12px;
-  font-weight: 600;
+.product-title-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.product-brand-pill {
+  align-self: flex-start;
+  background-color: var(--color-brand-subtle);
+  color: var(--color-brand-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   padding: 4px 12px;
-  border-radius: var(--radius-full, 9999px);
-  width: fit-content;
-  margin-bottom: 8px;
+  border-radius: var(--radius-full);
 }
 
-.product-info h1 {
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--color-text-main, #141b2b);
-  margin: 0 0 16px 0;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+.product-name-heading {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
-.rating {
+.product-rating-row {
   display: flex;
   align-items: center;
-  color: #943700; /* Tertiary branding color for stars */
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 24px;
+  gap: var(--space-2);
 }
 
-.rating span {
-  color: var(--color-primary, #004ac6);
-  margin-left: 8px;
-  cursor: pointer;
-}
-
-.rating span:hover {
-  text-decoration: underline;
-}
-
-/* Container Card for Pricing & Stock Data */
-.price-section {
-  background-color: #ffffff;
-  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
-  border-radius: var(--radius-lg, 0.75rem);
-  padding: 24px;
-  box-shadow: var(--shadow-sm, 0px 10px 30px rgba(0, 0, 0, 0.04));
-  margin-bottom: 32px;
-}
-
-/* Horizontal alignment wrapper for price, old price, and discount badge */
-.price-section .price-display,
-.price-section > div:first-of-type {
+.rating-stars-group {
   display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  margin-bottom: 4px;
+  align-items: center;
+  color: var(--color-rating);
 }
 
-.price-section h2 {
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--color-text-main, #141b2b);
-  margin: 0;
+.rating-num-val {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
-.old-price {
-  font-size: 16px;
+.rating-reviews-val {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+/* Buy Box Card */
+.product-buybox-card {
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Pricing */
+.buybox-price-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.price-main-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.current-price-val {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-brand-primary);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.old-mrp-val {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
   text-decoration: line-through;
-  color: var(--color-text-muted, #434655);
-  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
 }
 
-.discount {
-  background-color: #ffdad6; /* Error container background */
-  color: #93000a; /* High-contrast error text */
-  font-size: 12px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: var(--radius-md, 0.5rem);
-  margin-bottom: 4px;
+.discount-tag-pill {
+  background: var(--color-danger);
+  color: #FFFFFF;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-variant-numeric: tabular-nums;
 }
 
-.monthly-finance {
-  font-size: 14px;
-  color: var(--color-text-muted, #434655);
-  margin: 0 0 16px 0;
+.tax-inclusive-notice {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
 }
 
-.stock {
+/* Stock Status */
+.stock-status-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--color-success, #16a34a);
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
-/* CTA Action Element Area */
-.action-buttons {
+.stock-indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+}
+
+.stock-indicator-dot.in-stock {
+  background: var(--color-success);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+}
+
+.stock-indicator-dot.out-of-stock {
+  background: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+
+.stock-status-label {
+  color: var(--color-success-text);
+}
+
+/* Delivery Estimator */
+.delivery-estimator-box {
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 16px;
+  gap: var(--space-2);
 }
 
-.cart-btn,
-.buy-btn {
-  width: 100%;
-  padding: 16px;
-  font-size: 14px;
-  font-weight: 600;
+.delivery-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pin-icon {
+  color: var(--color-brand-primary);
+  flex-shrink: 0;
+}
+
+.delivery-input-row input {
+  flex: 1;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  outline: none;
+  background: var(--color-surface-card);
+}
+
+.delivery-input-row input:focus {
+  border-color: var(--color-brand-primary);
+}
+
+.pin-check-btn {
+  background: var(--color-brand-primary);
+  color: #FFFFFF;
   border: none;
-  border-radius: var(--radius-md, 0.5rem);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 0.8125rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: background var(--transition-fast);
 }
 
-.cart-btn {
-  background-color: var(--color-primary, #004ac6);
-  color: #ffffff;
-  box-shadow: 0px 4px 12px rgba(0, 74, 198, 0.2);
+.pin-check-btn:hover {
+  background: var(--color-brand-primary-hover);
 }
 
-.cart-btn:hover {
-  opacity: 0.9;
+.delivery-promise {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  color: var(--color-text-body);
 }
 
-.buy-btn {
-  background-color: transparent;
-  color: var(--color-primary, #004ac6);
-  border: 2px solid var(--color-primary, #004ac6);
+.delivery-promise svg {
+  color: var(--color-success);
 }
 
-.buy-btn:hover {
-  background-color: rgba(0, 74, 198, 0.05);
+/* Quantity Selection */
+.quantity-selection-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
 }
 
-.cart-btn:active,
-.buy-btn:active {
-  transform: scale(0.97);
+.qty-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Actions Row */
+.buybox-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.action-btn-primary,
+.action-btn-buynow {
+  height: 48px;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.action-btn-primary {
+  background: var(--color-brand-primary);
+  color: #FFFFFF;
+}
+
+.action-btn-primary:hover:not(:disabled) {
+  background: var(--color-brand-primary-hover);
+  transform: translateY(-1px);
+}
+
+.action-btn-primary.success {
+  background: var(--color-success);
+}
+
+.action-btn-buynow {
+  background: #FF8F00; /* Warm Amber CTA for instant Buy Now */
+  color: #FFFFFF;
+}
+
+.action-btn-buynow:hover:not(:disabled) {
+  background: #E65100;
+  transform: translateY(-1px);
+}
+
+.action-btn-primary:disabled,
+.action-btn-buynow:disabled {
+  background: var(--color-surface-subtle);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Trust / Guarantee Strip */
+.buybox-guarantee-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.guarantee-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.guarantee-pill svg {
+  color: var(--color-brand-primary);
+}
+
+@media (max-width: 576px) {
+  .buybox-actions-row {
+    grid-template-columns: 1fr;
+  }
 }

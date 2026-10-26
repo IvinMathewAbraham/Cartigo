@@ -6,8 +6,8 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px; /* Slightly widened to match page micro-spacing scales */
-  padding: 16px 48px; /* Consistent padding to match other section layouts */
+  gap: 8px;
+  padding: 8px 0;
   font-size: 14px;
 }
 

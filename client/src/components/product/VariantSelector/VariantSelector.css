@@ -1,88 +1,77 @@
 /* ==========================================================================
-   Product Variant Selector Component Stylesheet
+   CARTIGO VARIANT SELECTOR
    ========================================================================== */
 
 .variant-selector {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin-bottom: 0; /* Let the parent layout grid track handle vertical pacing */
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .variant-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-2);
 }
 
 .variant-title {
-  font-size: 14px; /* Aligns with rating & stock sizing */
-  font-weight: 600;
-  color: var(--color-text-main, #141b2b);
-  letter-spacing: -0.01em;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   margin: 0;
 }
 
 .variant-title span {
-  font-weight: 400;
-  color: var(--color-text-muted, #434655);
-  margin-left: 4px;
+  font-weight: 600;
+  color: var(--color-brand-primary);
+  text-transform: none;
+  margin-left: 6px;
 }
 
 .variant-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px; /* Uniform grid gutter feel */
+  gap: var(--space-2);
 }
 
-/* Base Variant Option Button */
 .variant-option {
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-main, #141b2b);
-  background-color: #ffffff;
-  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
-  border-radius: var(--radius-md, 0.5rem);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-body);
+  background-color: var(--color-surface-card);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--transition-fast);
   user-select: none;
 }
 
-/* Hover State */
-.variant-option:hover {
-  border-color: var(--color-primary, #004ac6);
-  background-color: rgba(0, 74, 198, 0.02);
+.variant-option:hover:not(:disabled) {
+  border-color: var(--color-brand-primary);
+  background-color: var(--color-brand-subtle);
+  color: var(--color-brand-primary);
 }
 
-/* Active / Selected State (Harmonized with main branding) */
 .variant-option.active {
-  border: 2px solid var(--color-primary, #004ac6);
-  background-color: var(--color-primary-light, #e1e8fd);
-  color: var(--color-primary, #004ac6);
-  font-weight: 600;
-  padding: 9px 19px; /* Prevents layout shift caused by 2px border */
+  border: 2px solid var(--color-brand-primary);
+  background-color: var(--color-brand-subtle);
+  color: var(--color-brand-primary);
+  box-shadow: 0 0 0 2px rgba(13, 71, 161, 0.12);
+  padding: 7px 15px; /* Compents for 2px border */
 }
 
-/* Optional: Specialized visual treatment if a variant is an image/color swatch */
-.variant-option.swatch-option {
-  padding: 4px;
-  border-radius: var(--radius-md, 0.5rem);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.variant-option.swatch-option.active {
-  padding: 3px;
-}
-
-/* Disabled/Out of Stock State */
 .variant-option:disabled,
 .variant-option.disabled {
   opacity: 0.4;
   cursor: not-allowed;
   text-decoration: line-through;
-  background-color: var(--color-bg-main, #f9f9ff);
-  border-color: var(--color-border, rgba(195, 198, 215, 0.4));
+  background-color: var(--color-surface-subtle);
+  border-color: var(--color-border-subtle);
 }

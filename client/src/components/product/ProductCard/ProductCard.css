@@ -1,156 +1,239 @@
 /* ==========================================================================
-   Marketplace Product Card Component Stylesheet
+   CARTIGO PRODUCT CARD STYLES
+   Design Token Hierarchy: White card, #F4F5F7 image container, Deep Navy CTAs
    ========================================================================== */
 
-.marketplace-card {
-  position: relative;
-  min-width: 220px;
-  background-color: transparent;
+.cartigo-product-card-wrapper {
+  width: 100%;
+  height: 100%;
 }
 
-.marketplace-card-link {
+.cartigo-card-anchor {
   text-decoration: none;
   color: inherit;
-  display: block; /* Makes sure the link takes up the full card width/height */
+  display: block;
+  height: 100%;
 }
 
-/* Container for product asset visual presentation */
-.product-image-wrapper {
-  height: 220px;
-  background: #f4f5f7;
-  border-radius: var(--radius-lg, 0.75rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+.cartigo-product-card {
   position: relative;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
-.product-image-wrapper img {
-  width: 75%;
-  height: 75%;
-  object-fit: contain;
-  transition: transform 0.3s ease-in-out;
+.cartigo-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-brand-accent);
 }
 
-/* Card Micro-interaction zoom effect on global wrapper hover */
-.marketplace-card-link:hover .product-image-wrapper img {
-  transform: scale(1.05);
-}
-
-/* Floating Action Overlay Element: Wishlist Toggle Frame */
-.wishlist-icon {
+/* Badge & Wishlist Row */
+.card-badge-row {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 34px;
-  height: 34px;
-  border: none;
-  border-radius: var(--radius-full, 9999px);
-  background: #ffffff;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.card-discount-pill {
+  pointer-events: auto;
+  background: var(--color-danger);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-in-stock-pill {
+  pointer-events: auto;
+  background: var(--color-success-bg);
+  color: var(--color-success-text);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+}
+
+.card-wishlist-btn {
+  pointer-events: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-subtle);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-sm, 0px 4px 12px rgba(0, 0, 0, 0.05));
   cursor: pointer;
-  z-index: 2;
-  transition: transform 0.2s ease-in-out, background-color 0.2s;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
 }
 
-.wishlist-icon:hover {
-  transform: scale(1.08);
-  background-color: var(--color-bg-main, #f9f9ff);
+.card-wishlist-btn:hover {
+  background: #FFFFFF;
+  color: var(--color-danger);
+  transform: scale(1.1);
 }
 
-.wishlist-icon:active {
-  transform: scale(0.95);
+.card-wishlist-btn.active {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+  border-color: #FECACA;
 }
 
-/* Meta Data Context Rows Typography and Spacing */
-.product-details {
-  margin-top: 14px;
+/* 1:1 Image Canvas */
+.card-image-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--color-surface-media);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
 }
 
-.product-details h3 {
-  font-size: 14px;
-  line-height: 1.4;
-  font-weight: 500;
-  color: var(--color-text-main, #141b2b);
-  margin: 0;
-  
-  /* Multiline truncated line clamp constraints */
+.card-main-img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  transition: transform var(--transition-normal);
+}
+
+.cartigo-product-card:hover .card-main-img {
+  transform: scale(1.06);
+}
+
+/* Info Box */
+.card-info-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-category-tag {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.35;
+  margin-bottom: var(--space-2);
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 2.7em;
 }
 
-.rating-row {
-  margin-top: 8px;
+/* Ratings */
+.card-rating-strip {
   display: flex;
   align-items: center;
-  gap: 2px;
-  color: #943700; /* Coordinated theme rating star color accent */
-  font-size: 14px;
+  gap: 4px;
+  margin-bottom: var(--space-2);
 }
 
-.rating-row span {
-  margin-left: 4px;
-  color: var(--color-text-muted, #434655);
-  font-size: 12px;
-}
-
-.price-row {
-  margin-top: 8px;
+.card-stars {
   display: flex;
   align-items: center;
-  gap: 10px;
+  color: var(--color-rating);
 }
 
-.current-price {
-  font-size: 18px;
+.rating-score {
+  font-size: 0.75rem;
   font-weight: 700;
-  color: var(--color-text-main, #141b2b);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
-.old-price {
-  color: var(--color-text-muted, #434655);
-  font-size: 14px;
+.rating-count {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+/* Price */
+.card-price-strip {
+  margin-top: auto;
+  margin-bottom: var(--space-3);
+}
+
+.price-stack {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.card-price-current {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-brand-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-price-mrp {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
   text-decoration: line-through;
-  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Floating Action Overlay Element: Direct Quick Add CTA Button */
-.add-cart-btn {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  height: 48px; /* Fixed sizing dimensions to make a crisp pill shape button */
-  width: 96px;
-  border: 1px solid var(--color-border, rgba(195, 198, 215, 0.4));
-  border-radius: var(--radius-md, 0.5rem);
-  background: #ffffff;
-  box-shadow: var(--shadow-sm, 0px 4px 12px rgba(0, 0, 0, 0.05));
+/* Add to Cart Button */
+.card-add-btn {
+  width: 100%;
+  height: 38px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-brand-primary);
+  color: #FFFFFF;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   cursor: pointer;
-  z-index: 2;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--transition-fast);
 }
 
-.add-cart-btn:hover {
-  border-color: var(--color-primary, #004ac6);
-  color: var(--color-primary, #004ac6);
-  transform: translateY(-2px);
+.card-add-btn:hover:not(:disabled) {
+  background: var(--color-brand-primary-hover);
+  box-shadow: 0 4px 10px rgba(13, 71, 161, 0.25);
 }
 
-.add-cart-btn:active {
-  transform: scale(0.95);
+.card-add-btn:disabled {
+  background: var(--color-surface-subtle);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
 }
 
-/* Skeleton Loading Component State UI Layer */
-.product-card-loading {
-  position: relative;
-  min-width: 220px;
-  height: 320px;
-  background: var(--color-border, rgba(195, 198, 215, 0.2));
-  border-radius: var(--radius-lg, 0.75rem);
+.card-add-btn.success {
+  background: var(--color-success);
+  color: #FFFFFF;
 }

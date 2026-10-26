@@ -1,37 +1,45 @@
+/* ==========================================================================
+   CARTIGO CATEGORY BAR & MEGA MENU
+   ========================================================================== */
+
 .category-bar-wrapper {
   position: relative;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  z-index: 990; /* Keeps dropdown content directly beneath header context overlays */
+  background: var(--color-surface-card);
+  border-bottom: 1px solid var(--color-border-subtle);
+  z-index: 990;
 }
 
 .category-bar {
-  height: 48px;
+  height: 46px;
   display: flex;
   align-items: center;
-  /* Instead of plain padding, constrain this to match your core layout container */
-  max-width: 1440px; 
-  margin: 0 auto;
-  padding: 0 32px;
 }
 
 .all-btn {
   border: none;
-  background: transparent;
+  background: var(--color-brand-primary);
+  color: #FFFFFF;
   font-weight: 600;
+  font-size: 0.84rem;
   cursor: pointer;
-  padding-right: 24px;
-  margin-right: 24px;
-  border-right: 1px solid #e5e7eb;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  margin-right: var(--space-4);
   display: flex;
   align-items: center;
-  color: #111827;
+  gap: 6px;
+  transition: background var(--transition-fast);
+}
+
+.all-btn:hover,
+.all-btn.active {
+  background: var(--color-brand-primary-hover);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: var(--space-5);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -42,118 +50,140 @@
 
 .nav-link {
   text-decoration: none;
-  color: #374151;
-  font-size: 14px;
+  color: var(--color-text-body);
+  font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
-  transition: color 0.15s ease;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
 }
 
 .nav-link:hover {
-  color: #2563eb; /* Tie to primary application branding accent color */
+  color: var(--color-brand-primary);
+  background: var(--color-brand-subtle);
 }
 
-/* ==========================================================================
-   Responsive Dropdown Container System
-   ========================================================================== */
+/* Backdrop */
+.category-overlay {
+  position: fixed;
+  inset: 0;
+  top: 160px;
+  background: var(--color-overlay-scrim);
+  backdrop-filter: blur(2px);
+  z-index: 998;
+}
+
+/* Mega Menu Positioner & Container */
+.mega-menu-positioner {
+  position: relative;
+  z-index: 999;
+}
+
 .mega-menu {
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%); /* Centers mega menu relative to the screen layout width */
-  
-  width: calc(100% - 64px); /* Accounts for global 32px side container bounds padding */
-  max-width: 1376px; /* 1440px standard max-width minus 64px outer padding variables */
-  height: 460px;
-  
-  background: #ffffff;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 440px;
+  background: var(--color-surface-card);
   display: flex;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-  border-radius: 0 0 12px 12px;
-  border: 1px solid #e5e7eb;
-  border-top: none;
+  box-shadow: var(--shadow-modal);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
   overflow: hidden;
+  animation: megaMenuSlide var(--transition-normal);
+}
+
+@keyframes megaMenuSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mega-sidebar {
   width: 260px;
-  background: #f9fafb;
-  border-right: 1px solid #e5e7eb;
+  background: var(--color-surface-subtle);
+  border-right: 1px solid var(--color-border-subtle);
   overflow-y: auto;
-  padding: 8px 0;
+  padding: var(--space-2) 0;
 }
 
 .mega-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 10px 20px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
-  transition: all 0.15s ease;
+  color: var(--color-text-body);
+  transition: all var(--transition-fast);
 }
 
 .mega-item:hover,
 .mega-item.active {
-  background: #f3f4f6;
-  color: #2563eb;
+  background: var(--color-brand-subtle);
+  color: var(--color-brand-primary);
+  font-weight: 600;
 }
 
 .mega-content {
   flex: 1;
-  padding: 32px;
+  padding: var(--space-6);
   overflow-y: auto;
-  background: #ffffff;
+  background: var(--color-surface-card);
 }
 
 .mega-content h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #f3f4f6;
-  padding-bottom: 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+  border-bottom: 2px solid var(--color-brand-subtle);
+  padding-bottom: 8px;
 }
 
 .subcategory-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
+  gap: var(--space-3);
 }
 
 .subcategory-card {
-  padding: 16px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
   text-decoration: none;
-  color: #4b5563;
-  font-size: 14px;
+  color: var(--color-text-body);
+  font-size: 0.875rem;
   font-weight: 500;
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-  background: #ffffff;
+  background: var(--color-surface-card);
+  transition: all var(--transition-fast);
 }
 
 .subcategory-card:hover {
-  border-color: #2563eb;
-  color: #2563eb;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.05);
+  border-color: var(--color-brand-accent);
+  color: var(--color-brand-primary);
+  background: var(--color-brand-subtle);
   transform: translateY(-1px);
 }
 
-/* Responsive adjustments for mid-tier viewing devices */
 @media (max-width: 768px) {
   .nav-links {
-    gap: 16px;
+    gap: var(--space-3);
   }
   .mega-menu {
+    height: calc(100vh - 140px);
+    flex-direction: column;
+  }
+  .mega-sidebar {
     width: 100%;
-    max-width: 100%;
-    left: 0;
-    transform: none;
-    border-radius: 0;
-    height: calc(100vh - 120px);
+    height: 140px;
   }
 }
